@@ -410,11 +410,86 @@ nav{
 
 /* SPLIT SECTION */
 .split{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+
+/* ─── MOBILE ─── */
 @media(max-width:768px){
-  .split{grid-template-columns:1fr;gap:48px}
-  nav{padding:16px 20px}
-  .hero-proof{gap:20px}
-  .choice-row{flex-direction:column;align-items:center}
+
+  /* NAV */
+  nav{padding:14px 20px}
+  .nav-logo{font-size:19px}
+  .nav-logo .id-box{font-size:17px}
+  .nav-cta{font-size:13px;padding:9px 18px}
+  .nav-back{font-size:13px;padding:9px 16px}
+
+  /* HERO HOME */
+  #home .hero{padding:100px 20px 60px}
+  .hero-h1{font-size:clamp(36px,10vw,56px);letter-spacing:-0.02em}
+  .hero-sub{font-size:16px;margin-bottom:40px}
+  .hero-eyebrow{font-size:12px;padding:7px 14px;margin-bottom:24px}
+  .choice-row{flex-direction:column;align-items:stretch;padding:0 4px}
+  .choice-card{width:100%}
+  .hero-proof{gap:16px;margin-top:40px}
+  .proof-n{font-size:22px}
+  .proof-l{font-size:12px}
+  .proof-sep{height:24px}
+
+  /* HERO LANDING */
+  .lp-hero{padding:100px 20px 60px}
+  .lp-h1{font-size:clamp(32px,9vw,52px);letter-spacing:-0.02em}
+  .lp-sub{font-size:15px;margin-bottom:36px}
+  .lp-eyebrow{font-size:12px;padding:7px 14px;margin-bottom:24px}
+  .lp-cta-row{flex-direction:column;align-items:stretch;gap:10px;margin-bottom:40px}
+  .btn-primary,.btn-ghost{width:100%;text-align:center;font-size:15px;padding:15px 24px}
+
+  /* PLAYER MOCKUP */
+  .player-mockup{padding:20px}
+  .pm-patient{font-size:16px}
+
+  /* QR MOCKUP */
+  .qr-mockup{padding:20px}
+  .qr-box{width:120px;height:120px}
+
+  /* SECTIONS */
+  .sec{padding:64px 20px}
+  .sec-h2{font-size:clamp(26px,7vw,40px)}
+  .sec-desc{font-size:15px}
+
+  /* SPLIT */
+  .split{grid-template-columns:1fr;gap:40px}
+
+  /* SCENARIOS */
+  .scenario{padding:20px}
+  .scenario-text{font-size:14px}
+
+  /* FEATURES */
+  .feat-grid{grid-template-columns:1fr;gap:14px}
+  .feat-card{padding:22px}
+
+  /* HOW STEPS */
+  .how-steps{margin-top:32px}
+  .how-step{gap:20px;padding-bottom:36px}
+  .step-title{font-size:16px}
+  .step-desc{font-size:14px}
+
+  /* PRICING */
+  .price-card{padding:28px 24px}
+  .price-val{font-size:44px}
+
+  /* WAITLIST */
+  .waitlist-sec{padding:64px 20px 80px}
+  .waitlist-h{font-size:clamp(26px,7vw,40px)}
+  .waitlist-sub{font-size:15px;margin-bottom:28px}
+  .waitlist-form{flex-direction:column;align-items:stretch}
+  .wf-input{min-width:unset;width:100%}
+  .wf-btn{width:100%;text-align:center}
+
+  /* STATS */
+  .stats-row{gap:28px}
+  .stat-item .stat-n{font-size:36px}
+
+  /* FOOTER */
+  footer{flex-direction:column;align-items:flex-start;gap:16px;padding:36px 20px}
+  .footer-links{gap:20px;flex-wrap:wrap}
 }
 
 /* FOOTER */
