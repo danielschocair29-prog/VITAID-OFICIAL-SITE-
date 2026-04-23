@@ -3,371 +3,2655 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>vitaid — Sua saúde tem um lugar agora</title>
-<meta name="description" content="O RG da Saúde para pacientes. A pré-consulta inteligente para médicos.">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>vitaid — Sua saúde tem um lugar</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --green:#00E5A0;--cyan:#00B4D8;
+  --green:#00E5A0;
+  --cyan:#00B4D8;
   --grad:linear-gradient(120deg,#00E5A0,#00B4D8);
-  --dark:#0D0F14;--dark2:#131619;
-  --surface:rgba(255,255,255,0.05);--surface2:rgba(255,255,255,0.09);
-  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);
-  --t1:#FFFFFF;--t2:rgba(255,255,255,0.65);--t3:rgba(255,255,255,0.35);
+  --dark:#0D0F14;
+  --dark2:#131619;
+  --dark3:#1A1E26;
+  --dark4:#222830;
+  --light:#F5F7FA;
+  --light2:#ECEEF2;
+  --white:#FFFFFF;
+  --text-dark:#0D0F14;
+  --text-mid:#4B5563;
+  --text-soft:#9CA3AF;
+  --text-xsoft:#C4C9D4;
+  --border-dark:rgba(255,255,255,0.07);
+  --border-light:rgba(0,0,0,0.07);
   --font:'Plus Jakarta Sans',sans-serif;
+  --r:16px;
+  --r-sm:10px;
+  --r-lg:24px;
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--font);background:var(--dark);color:var(--t1);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-.page{display:none}.page.active{display:block}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,15,20,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-.logo{display:flex;align-items:center;font-size:20px;font-weight:800;cursor:pointer;text-decoration:none;gap:1px}
-.logo .vita{color:#fff}.logo .idb{background:var(--grad);color:#0D0F14;font-weight:800;padding:2px 6px;border-radius:5px}
-.nav-btn{font-family:var(--font);font-weight:700;font-size:13px;padding:9px 18px;border-radius:100px;border:none;cursor:pointer;transition:all .2s}
-.nav-btn.primary{background:var(--grad);color:#0D0F14}.nav-btn.primary:hover{opacity:.85}
-.nav-btn.ghost{background:var(--surface2);border:1px solid var(--border2);color:var(--t2);display:flex;align-items:center;gap:6px}
-.nav-btn.ghost:hover{color:#fff}
-.sec{padding:80px 20px}.sec-inner{max-width:680px;margin:0 auto}
-.tag{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:100px;margin-bottom:24px}
-.tag.green{background:rgba(0,229,160,0.1);border:1px solid rgba(0,229,160,0.2);color:var(--green)}
-.tag.cyan{background:rgba(0,180,216,0.1);border:1px solid rgba(0,180,216,0.2);color:var(--cyan)}
-.tag .dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-h1{font-size:clamp(36px,8vw,72px);font-weight:800;line-height:1.05;letter-spacing:-0.025em;margin-bottom:20px}
-h2{font-size:clamp(28px,6vw,48px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px}
-p.lead{font-size:clamp(15px,2.5vw,18px);color:var(--t2);line-height:1.7;margin-bottom:32px}
-em{font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.btn{display:block;font-family:var(--font);font-weight:700;font-size:16px;padding:16px 32px;border-radius:100px;border:none;cursor:pointer;text-align:center;transition:all .2s;width:100%}
-.btn.primary{background:var(--grad);color:#0D0F14}.btn.primary:hover{opacity:.87;transform:translateY(-1px)}
-.btn.outline{background:transparent;border:1px solid var(--border2);color:var(--t2)}.btn.outline:hover{border-color:rgba(255,255,255,.3);color:#fff}
-.btn-row{display:flex;flex-direction:column;gap:12px;margin-bottom:48px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:24px;transition:all .3s;margin-bottom:14px}
-.card:hover{background:var(--surface2);border-color:var(--border2)}
-.card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.card-title{font-size:17px;font-weight:700;margin-bottom:8px}.card-desc{font-size:14px;color:var(--t2);line-height:1.65}
-.choice{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 16px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;width:100%;margin-bottom:0;min-height:160px;position:relative}
-.choice:hover{background:var(--surface2);border-color:var(--border2);transform:translateY(-2px)}
-.choice-ico{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px}
-.choice-body{flex:1}.choice-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
-.choice-ttl{font-size:17px;font-weight:800;margin-bottom:4px;color:#fff;-webkit-text-fill-color:#fff;background:none}.choice-dsc{font-size:13px;color:var(--t2);line-height:1.5}
-.choice-arr{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .3s;margin-top:auto}
-.choice:hover .choice-arr{transform:translateX(3px)}
-.proof{display:flex;justify-content:space-around;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px 12px}
-.proof-item{text-align:center;flex:1}.proof-n{font-size:24px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.proof-l{font-size:11px;color:var(--t3);margin-top:3px;line-height:1.4}.proof-sep{width:1px;background:var(--border)}
-.hero-wrap{min-height:100vh;padding:100px 20px 60px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
-.hero-wrap .inner{position:relative;z-index:1;max-width:680px;margin:0 auto;width:100%}
-.bg-glow-green{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:120%;height:70%;background:radial-gradient(ellipse,rgba(0,229,160,0.1) 0%,transparent 70%);pointer-events:none}
-.bg-glow-cyan{position:absolute;bottom:0;right:-20%;width:80%;height:60%;background:radial-gradient(ellipse,rgba(0,180,216,0.07) 0%,transparent 70%);pointer-events:none}
-.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse 80% 80% at 50% 30%,black,transparent)}
-.player{background:var(--dark2);border:1px solid var(--border2);border-radius:20px;padding:22px;margin-bottom:32px}
-.player-top{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-.player-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite}
-.player-lbl{font-size:12px;color:var(--t3)}.player-name{font-size:18px;font-weight:800;margin-bottom:2px}.player-meta{font-size:12px;color:var(--t3);margin-bottom:14px}
-.player-alert{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:10px 14px;font-size:12px;color:#F87171;margin-bottom:14px}
-.wave{height:36px;display:flex;align-items:center;gap:2px;margin-bottom:10px}
-.wave span{flex:1;border-radius:2px;background:linear-gradient(to top,rgba(0,229,160,0.3),rgba(0,180,216,0.7));animation:wv 1.4s ease-in-out infinite alternate}
-.wave span:nth-child(2n){animation-delay:.12s}.wave span:nth-child(3n){animation-delay:.24s}.wave span:nth-child(4n){animation-delay:.36s}
-@keyframes wv{from{height:3px;opacity:.3}to{height:28px;opacity:1}}
-.progress{height:3px;background:rgba(255,255,255,0.1);border-radius:2px;margin-bottom:6px;overflow:hidden}
-.progress-fill{height:100%;width:60%;background:var(--grad);border-radius:2px}
-.prog-times{display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:14px}
-.play-btn{width:44px;height:44px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;margin:0 auto;cursor:pointer}
-.play-btn svg{width:16px;height:16px;fill:#0D0F14;margin-left:2px}
-.qr-card{background:var(--dark2);border:1px solid var(--border2);border-radius:20px;padding:24px;text-align:center;margin-bottom:32px}
-.qr-brand{font-size:14px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:2px}
-.qr-brand .vita{color:var(--t2)}.qr-brand .idb{background:var(--grad);color:#0D0F14;font-weight:800;padding:1px 5px;border-radius:4px;font-size:12px}
-.qr-box{width:130px;height:130px;background:#fff;border-radius:12px;margin:0 auto 14px;padding:10px;display:flex;align-items:center;justify-content:center}
-.qr-box svg{width:100%;height:100%}.qr-name{font-size:16px;font-weight:700;margin-bottom:3px}.qr-sub{font-size:12px;color:var(--t3);margin-bottom:14px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.chip{font-size:12px;font-weight:600;padding:4px 12px;border-radius:100px}
-.chip.g{background:rgba(0,229,160,0.12);color:var(--green)}.chip.b{background:rgba(0,180,216,0.12);color:var(--cyan)}.chip.r{background:rgba(239,68,68,0.12);color:#F87171}
-.steps{display:flex;flex-direction:column;gap:0;margin:32px 0}
-.step{display:flex;gap:20px;padding-bottom:32px;position:relative}
-.step:not(:last-child)::after{content:'';position:absolute;left:18px;top:40px;bottom:0;width:1px;background:linear-gradient(var(--border2),transparent)}
-.step-num{width:38px;height:38px;border-radius:50%;background:var(--surface2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
-.step-body{padding-top:7px}.step-ttl{font-size:16px;font-weight:700;margin-bottom:6px}.step-dsc{font-size:14px;color:var(--t2);line-height:1.6}
-.scenario{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px}
-.scenario-tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.scenario-tag::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor}
-.scenario-text{font-size:14px;color:var(--t2);line-height:1.7}.scenario-text strong{color:#fff}
-.price-card{background:linear-gradient(135deg,rgba(0,229,160,0.07),rgba(0,180,216,0.04));border:1px solid rgba(0,229,160,0.2);border-radius:24px;padding:32px 24px}
-.price-badge{display:inline-block;background:var(--grad);color:#0D0F14;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:100px;margin-bottom:16px}
-.price-name{font-size:13px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.price-val{font-size:56px;font-weight:800;letter-spacing:-0.03em;line-height:1;margin-bottom:8px}
-.price-val sup{font-size:22px;vertical-align:top;margin-top:10px}.price-val sub{font-size:18px;font-weight:500;color:var(--t2)}
-.price-desc{font-size:15px;color:var(--t2);margin-bottom:24px;line-height:1.6}
-.price-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:28px}
-.price-list li{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--t2)}
-.price-list li::before{content:'';width:18px;height:18px;flex-shrink:0;border-radius:50%;background:rgba(0,229,160,0.15);background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 5l2 2 4-4' stroke='%2300E5A0' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-size:10px;background-repeat:no-repeat;background-position:center}
-.waitlist-wrap{padding:80px 20px 100px;position:relative;overflow:hidden}
-.waitlist-wrap .inner{position:relative;z-index:1;max-width:520px;margin:0 auto;text-align:center}
-.wl-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(0,229,160,0.08),transparent)}
-.wl-form{display:flex;flex-direction:column;gap:12px;margin-bottom:12px}
-.wl-input{width:100%;background:var(--surface2);border:1px solid var(--border2);color:#fff;font-size:15px;font-family:var(--font);padding:15px 20px;border-radius:100px;outline:none;transition:border-color .2s}
-.wl-input::placeholder{color:var(--t3)}.wl-input:focus{border-color:rgba(0,229,160,0.4)}
-.wl-note{font-size:13px;color:var(--t3)}
-.wl-success{display:none;background:rgba(0,229,160,0.1);border:1px solid rgba(0,229,160,0.25);border-radius:14px;padding:20px;margin-top:12px}
-.wl-success.show{display:block}.wl-success-t{font-size:16px;font-weight:700;color:var(--green);margin-bottom:4px}.wl-success-d{font-size:14px;color:var(--t2)}
-.div{height:1px;background:var(--border);margin:0 20px}
-footer{padding:32px 20px 48px;border-top:1px solid var(--border)}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px}
-.footer-links a{font-size:13px;color:var(--t3);text-decoration:none}.footer-links a:hover{color:var(--t2)}
-.footer-copy{font-size:12px;color:var(--t3)}
-@media(min-width:768px){
-  .btn-row{flex-direction:row}.btn{width:auto}
-  .wl-form{flex-direction:row}.btn.wl-btn{width:auto;white-space:nowrap}
-  .sec{padding:100px 40px}
-  
-  .choice{margin-bottom:0}
-  footer{display:flex;align-items:center;justify-content:space-between;padding:32px 40px}
-  .footer-links{margin-bottom:0}
+body{font-family:var(--font);background:var(--dark);color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ══════════════════════════════
+   PAGES
+══════════════════════════════ */
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+
+/* ══════════════════════════════
+   NAV
+══════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .3s,backdrop-filter .3s;
+}
+nav.scrolled{
+  background:rgba(13,15,20,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border-dark);
+}
+.nav-logo{display:flex;align-items:center;cursor:pointer;text-decoration:none}
+.nav-logo .vita{font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.5px}
+.nav-logo .id-box{
+  background:var(--grad);
+  color:#0D0F14;font-weight:800;font-size:20px;
+  padding:1px 6px;border-radius:5px;margin-left:2px;
+}
+.nav-cta{
+  background:var(--grad);color:#0D0F14;
+  font-weight:700;font-size:14px;
+  padding:10px 24px;border-radius:100px;
+  border:none;cursor:pointer;
+  transition:opacity .2s,transform .2s;
+  text-decoration:none;
+}
+.nav-cta:hover{opacity:.9;transform:translateY(-1px)}
+.nav-back{
+  display:flex;align-items:center;gap:8px;
+  font-size:14px;color:var(--text-soft);cursor:pointer;
+  background:none;border:none;font-family:var(--font);
+  transition:color .2s;
+}
+.nav-back:hover{color:#fff}
+.nav-back svg{width:16px;height:16px}
+
+/* ══════════════════════════════
+   HOMEPAGE
+══════════════════════════════ */
+
+/* HERO HOME */
+.home-hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:120px 24px 80px;
+  position:relative;
+  overflow:hidden;
+}
+.home-hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 65% 55% at 50% -5%, rgba(0,229,160,0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 30% at 15% 60%, rgba(0,180,216,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 85% 70%, rgba(0,229,160,0.04) 0%, transparent 50%);
+}
+.home-hero-grid{display:none}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  border-radius:100px;padding:6px 16px;
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green);margin-bottom:28px;position:relative;
+}
+.eyebrow-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+
+.home-h1{
+  font-size:clamp(52px,8vw,96px);font-weight:800;
+  line-height:1.0;letter-spacing:-3px;
+  margin-bottom:24px;position:relative;
+}
+.home-h1 .grad-text{
+  background:var(--grad);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.home-sub{
+  font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,0.55);
+  max-width:540px;line-height:1.65;margin:0 auto 60px;position:relative;
+}
+
+/* CHOICE CARDS */
+.choice-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  max-width:800px;width:100%;margin:0 auto;position:relative;
+}
+.choice-card{
+  background:var(--dark3);border:1px solid rgba(255,255,255,0.07);
+  border-radius:var(--r-lg);padding:40px 36px;
+  cursor:pointer;transition:all .3s;
+  text-align:left;position:relative;overflow:hidden;
+}
+.choice-card::before{
+  content:'';position:absolute;inset:0;
+  opacity:0;transition:opacity .3s;
+}
+.choice-card.med::before{background:radial-gradient(ellipse at 30% 30%, rgba(0,229,160,0.08), transparent 60%)}
+.choice-card.pac::before{background:radial-gradient(ellipse at 70% 30%, rgba(0,180,216,0.08), transparent 60%)}
+.choice-card:hover{
+  border-color:rgba(0,229,160,0.25);
+  transform:translateY(-4px);
+  box-shadow:0 24px 48px rgba(0,0,0,0.3);
+}
+.choice-card:hover::before{opacity:1}
+.choice-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+}
+.choice-icon.green{background:rgba(0,229,160,0.12)}
+.choice-icon.blue{background:rgba(0,180,216,0.12)}
+.choice-icon svg{width:24px;height:24px}
+.choice-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-soft);margin-bottom:10px}
+.choice-title{font-size:26px;font-weight:800;line-height:1.15;margin-bottom:12px;letter-spacing:-0.5px}
+.choice-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:24px}
+.choice-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:14px;font-weight:700;
+  transition:gap .2s;
+}
+.choice-card.med .choice-cta{color:var(--green)}
+.choice-card.pac .choice-cta{color:var(--cyan)}
+.choice-card:hover .choice-cta{gap:14px}
+
+/* SOCIAL PROOF BAR HOME */
+.proof-bar{
+  padding:40px 48px;
+  border-top:1px solid var(--border-dark);
+  display:flex;align-items:center;justify-content:center;gap:48px;
+  flex-wrap:wrap;
+}
+.proof-item{display:flex;align-items:center;gap:12px}
+.proof-num{font-size:28px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.proof-label{font-size:13px;color:var(--text-soft);line-height:1.4}
+.proof-divider{width:1px;height:40px;background:var(--border-dark)}
+
+/* ══════════════════════════════
+   LANDING MÉDICO
+══════════════════════════════ */
+
+/* HERO MÉDICO */
+.med-hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 24px 80px;
+  position:relative;overflow:hidden;
+}
+.med-hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% -5%, rgba(0,229,160,0.11) 0%, transparent 60%),
+    radial-gradient(ellipse 35% 25% at 10% 70%, rgba(0,180,216,0.05) 0%, transparent 50%);
+}
+.med-hero-grid{display:none}
+.hero-kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.2);
+  border-radius:100px;padding:6px 16px;
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green);margin-bottom:32px;position:relative;
+}
+.med-h1{
+  font-size:clamp(44px,7vw,88px);font-weight:800;
+  line-height:1.0;letter-spacing:-3px;
+  max-width:900px;margin:0 auto 24px;position:relative;
+}
+.med-h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.med-sub{
+  font-size:clamp(16px,1.8vw,19px);color:rgba(255,255,255,0.5);
+  max-width:520px;line-height:1.65;margin:0 auto 48px;position:relative;
+}
+.hero-cta-row{display:flex;align-items:center;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;margin-bottom:64px}
+.btn-primary{
+  background:var(--grad);color:#0D0F14;
+  font-family:var(--font);font-weight:700;font-size:15px;
+  padding:16px 36px;border-radius:100px;border:none;cursor:pointer;
+  transition:all .25s;box-shadow:0 0 32px rgba(0,229,160,0.25);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 48px rgba(0,229,160,0.4)}
+.btn-ghost{
+  background:transparent;color:rgba(255,255,255,0.6);
+  font-family:var(--font);font-weight:600;font-size:15px;
+  padding:16px 28px;border-radius:100px;
+  border:1px solid rgba(255,255,255,0.12);cursor:pointer;
+  transition:all .25s;
+}
+.btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+
+/* AUDIO CARD HERO — fiel ao produto real */
+.audio-card{
+  background:#1A1D24;
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:24px;
+  padding:32px 36px;
+  max-width:560px;
+  margin:0 auto;
+  position:relative;
+  box-shadow:
+    0 0 0 1px rgba(0,229,160,0.06),
+    0 40px 80px rgba(0,0,0,0.55),
+    0 8px 32px rgba(0,0,0,0.3);
+  text-align:left;
+}
+.audio-card::before{
+  content:'';position:absolute;inset:-1px;border-radius:25px;
+  background:linear-gradient(135deg,rgba(0,229,160,0.18),transparent 45%,rgba(0,180,216,0.08));
+  mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  mask-composite:exclude;padding:1px;pointer-events:none;
+}
+.ac-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:22px;
+}
+.ac-badge{
+  display:flex;align-items:center;gap:7px;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--green);
+}
+.ac-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--green);
+  animation:pulse 2s infinite;flex-shrink:0;
+}
+.ac-time-badge{
+  font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);
+  font-variant-numeric:tabular-nums;
+}
+.ac-name{
+  font-size:26px;font-weight:800;color:#fff;
+  text-align:center;margin-bottom:6px;letter-spacing:-0.5px;
+}
+.ac-meta{
+  font-size:14px;color:rgba(255,255,255,0.45);
+  text-align:center;margin-bottom:20px;
+}
+.ac-tags{
+  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;
+}
+.ac-tag{
+  font-size:12px;font-weight:600;
+  padding:6px 14px;border-radius:100px;
+  display:flex;align-items:center;gap:5px;
+}
+.ac-tag.warn{
+  background:rgba(180,100,0,0.25);color:#F5A623;
+  border:1px solid rgba(180,100,0,0.35);
+}
+.ac-tag.ok{
+  background:rgba(0,180,100,0.18);color:#00E5A0;
+  border:1px solid rgba(0,200,120,0.3);
+}
+.ac-tag.info{
+  background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+/* Wave bars — exatamente como no print */
+.ac-wave{
+  display:flex;align-items:center;gap:3px;
+  height:64px;margin-bottom:20px;
+}
+.ac-wave span{
+  flex:1;border-radius:3px;
+  transition:background .3s;
+}
+.ac-wave span.played{background:var(--green)}
+.ac-wave span.unplayed{background:rgba(255,255,255,0.15)}
+
+/* Alturas variadas para simular voz real */
+.ac-wave span:nth-child(1){height:40%}.ac-wave span:nth-child(2){height:65%}
+.ac-wave span:nth-child(3){height:90%}.ac-wave span:nth-child(4){height:55%}
+.ac-wave span:nth-child(5){height:100%}.ac-wave span:nth-child(6){height:75%}
+.ac-wave span:nth-child(7){height:45%}.ac-wave span:nth-child(8){height:85%}
+.ac-wave span:nth-child(9){height:60%}.ac-wave span:nth-child(10){height:95%}
+.ac-wave span:nth-child(11){height:70%}.ac-wave span:nth-child(12){height:50%}
+.ac-wave span:nth-child(13){height:80%}.ac-wave span:nth-child(14){height:40%}
+.ac-wave span:nth-child(15){height:90%}.ac-wave span:nth-child(16){height:55%}
+.ac-wave span:nth-child(17){height:70%}.ac-wave span:nth-child(18){height:35%}
+.ac-wave span:nth-child(19){height:60%}.ac-wave span:nth-child(20){height:80%}
+.ac-wave span:nth-child(21){height:50%}.ac-wave span:nth-child(22){height:65%}
+.ac-wave span:nth-child(23){height:45%}.ac-wave span:nth-child(24){height:75%}
+.ac-wave span:nth-child(25){height:30%}.ac-wave span:nth-child(26){height:55%}
+.ac-wave span:nth-child(27){height:40%}.ac-wave span:nth-child(28){height:60%}
+.ac-wave span:nth-child(29){height:35%}.ac-wave span:nth-child(30){height:45%}
+
+@keyframes wave{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.35)}}
+
+/* Player row */
+.ac-player-row{
+  display:flex;align-items:center;gap:14px;
+}
+.ac-play{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--grad);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 0 20px rgba(0,229,160,0.3);
+}
+.ac-play:hover{transform:scale(1.08);box-shadow:0 0 32px rgba(0,229,160,0.5)}
+.ac-play svg{width:16px;height:16px;fill:#0D0F14;margin-left:3px}
+.ac-progress-wrap{flex:1;display:flex;flex-direction:column;gap:0}
+.ac-progress{
+  height:3px;
+  background:rgba(255,255,255,0.1);
+  border-radius:2px;overflow:hidden;
+  cursor:pointer;
+}
+.ac-fill{
+  height:100%;width:38%;
+  background:linear-gradient(90deg,var(--green),var(--cyan));
+  border-radius:2px;
+}
+.ac-time{
+  font-size:12px;font-weight:600;
+  color:rgba(255,255,255,0.4);
+  font-variant-numeric:tabular-nums;
+  margin-top:6px;text-align:right;
+}
+
+/* ══════════════════════════════
+   SECTIONS COMUNS
+══════════════════════════════ */
+section{padding:100px 48px}
+.section-inner{max-width:1100px;margin:0 auto}
+
+/* PROBLEMA */
+.sec-problem{background:var(--light)}
+.sec-problem *{color:var(--text-dark)}
+.sec-tag{
+  display:inline-block;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--green);background:rgba(0,229,160,0.1);
+  border:1px solid rgba(0,229,160,0.2);
+  border-radius:100px;padding:5px 14px;margin-bottom:20px;
+}
+.sec-tag.blue{color:var(--cyan);background:rgba(0,180,216,0.1);border-color:rgba(0,180,216,0.2)}
+.sec-tag.dark{color:var(--text-soft);background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1)}
+.sec-h2{
+  font-size:clamp(32px,4.5vw,56px);font-weight:800;
+  line-height:1.1;letter-spacing:-1.5px;margin-bottom:20px;
+}
+.sec-h2 em{font-style:normal}
+.sec-h2.light em{background:linear-gradient(120deg,#00C47A,#0099B8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-h2.dark-txt em{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-sub{font-size:18px;line-height:1.65;max-width:580px}
+.sec-sub.light-txt{color:rgba(255,255,255,0.55)}
+.sec-sub.dark-txt{color:var(--text-mid)}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:60px;border-radius:var(--r);overflow:hidden}
+.stat-box{
+  background:var(--light2);padding:36px 32px;
+}
+.stat-num{font-size:52px;font-weight:800;letter-spacing:-2px;line-height:1}
+.stat-num.green{background:linear-gradient(120deg,#00C47A,#0099B8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:14px;color:var(--text-mid);margin-top:8px;line-height:1.5}
+
+/* VIRADA */
+.sec-virada{background:var(--dark2)}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px}
+.step-card{
+  background:var(--dark3);border:1px solid var(--border-dark);
+  border-radius:var(--r-lg);padding:32px;
+  position:relative;overflow:hidden;
+  transition:border-color .3s;
+}
+.step-card:hover{border-color:rgba(0,229,160,0.2)}
+.step-num{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-xsoft);margin-bottom:20px;
+}
+.step-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:rgba(0,229,160,0.08);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+}
+.step-icon svg{width:22px;height:22px;stroke:var(--green);fill:none;stroke-width:1.8}
+.step-title{font-size:18px;font-weight:700;margin-bottom:10px}
+.step-desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6}
+.step-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--grad);transform:scaleX(0);transform-origin:left;
+  transition:transform .3s;
+}
+.step-card:hover::after{transform:scaleX(1)}
+
+/* DEPOIMENTO */
+.sec-testimonial{background:var(--dark)}
+.testimonial-box{
+  background:var(--dark3);border:1px solid var(--border-dark);
+  border-radius:var(--r-lg);padding:56px;
+  position:relative;overflow:hidden;max-width:800px;margin:60px auto 0;
+}
+.testimonial-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:var(--grad);opacity:.4;
+}
+.quote-mark{font-size:80px;line-height:.6;color:rgba(0,229,160,0.15);font-family:Georgia,serif;margin-bottom:20px}
+.quote-text{font-size:clamp(18px,2vw,24px);font-weight:500;line-height:1.55;color:rgba(255,255,255,0.85);margin-bottom:32px}
+.quote-author{display:flex;align-items:center;gap:16px}
+.quote-avatar{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--grad);display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:16px;color:#0D0F14;
+}
+.quote-name{font-size:15px;font-weight:700}
+.quote-role{font-size:13px;color:var(--text-soft)}
+
+/* PROOF LOGOS */
+.proof-logos{
+  display:flex;align-items:center;justify-content:center;gap:48px;
+  flex-wrap:wrap;margin-top:48px;
+}
+.proof-logo{
+  font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+  display:flex;align-items:center;gap:8px;
+}
+.proof-logo-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+
+/* FAQ */
+.sec-faq{background:var(--dark2)}
+.faq-list{margin-top:48px;max-width:700px}
+.faq-item{border-bottom:1px solid var(--border-dark);padding:24px 0}
+.faq-q{
+  font-size:16px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  transition:color .2s;
+}
+.faq-q:hover{color:var(--green)}
+.faq-chevron{
+  width:20px;height:20px;flex-shrink:0;
+  transition:transform .3s;
+  stroke:currentColor;fill:none;stroke-width:2;
+}
+.faq-item.open .faq-chevron{transform:rotate(180deg)}
+.faq-a{
+  font-size:15px;color:rgba(255,255,255,0.55);line-height:1.65;
+  max-height:0;overflow:hidden;transition:max-height .3s,padding .3s;
+}
+.faq-item.open .faq-a{max-height:200px;padding-top:14px}
+
+/* CTA FINAL */
+.sec-cta-final{
+  background:var(--dark);
+  text-align:center;
+  padding:120px 48px;
+}
+.cta-box{
+  max-width:640px;margin:0 auto;
+  background:var(--dark3);border:1px solid rgba(0,229,160,0.15);
+  border-radius:var(--r-lg);padding:64px;
+  position:relative;overflow:hidden;
+}
+.cta-box::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%, rgba(0,229,160,0.06), transparent 60%);
+}
+.cta-h2{font-size:clamp(28px,3.5vw,44px);font-weight:800;letter-spacing:-1px;margin-bottom:16px;position:relative}
+.cta-sub{font-size:16px;color:rgba(255,255,255,0.5);margin-bottom:36px;line-height:1.65;position:relative}
+.waitlist-form{display:flex;gap:12px;max-width:400px;margin:0 auto;position:relative;flex-wrap:wrap;justify-content:center}
+.waitlist-input{
+  flex:1;min-width:200px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:100px;padding:14px 24px;
+  font-family:var(--font);font-size:14px;color:#fff;
+  outline:none;transition:border-color .2s;
+}
+.waitlist-input::placeholder{color:rgba(255,255,255,0.3)}
+.waitlist-input:focus{border-color:rgba(0,229,160,0.4)}
+.waitlist-btn{
+  background:var(--grad);color:#0D0F14;
+  font-family:var(--font);font-weight:700;font-size:14px;
+  padding:14px 28px;border-radius:100px;border:none;cursor:pointer;
+  white-space:nowrap;transition:all .25s;
+}
+.waitlist-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,229,160,0.3)}
+.waitlist-note{font-size:12px;color:rgba(255,255,255,0.3);margin-top:16px;position:relative}
+
+/* FOOTER */
+footer{
+  background:var(--dark);
+  border-top:1px solid var(--border-dark);
+  padding:40px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-logo{display:flex;align-items:center}
+.footer-logo .vita{font-size:16px;font-weight:800;color:rgba(255,255,255,0.4)}
+.footer-logo .id-box{background:var(--grad);color:#0D0F14;font-weight:800;font-size:16px;padding:0px 4px;border-radius:4px;margin-left:2px}
+.footer-note{font-size:12px;color:rgba(255,255,255,0.2)}
+
+/* ══════════════════════════════
+   LANDING PACIENTE
+══════════════════════════════ */
+.pac-hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 24px 80px;
+  position:relative;overflow:hidden;
+}
+.pac-hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% -5%, rgba(0,180,216,0.11) 0%, transparent 60%),
+    radial-gradient(ellipse 35% 25% at 90% 70%, rgba(0,229,160,0.05) 0%, transparent 50%);
+}
+.pac-hero-grid{display:none}
+.pac-h1{
+  font-size:clamp(44px,7vw,88px);font-weight:800;
+  line-height:1.0;letter-spacing:-3px;
+  max-width:900px;margin:0 auto 24px;position:relative;
+}
+.pac-h1 em{font-style:normal;background:linear-gradient(120deg,#00B4D8,#00E5A0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* QR CARD */
+.qr-card{
+  background:var(--dark3);border:1px solid rgba(255,255,255,0.08);
+  border-radius:var(--r-lg);padding:32px;
+  max-width:360px;margin:0 auto;
+  box-shadow:0 32px 64px rgba(0,0,0,0.4);
+  position:relative;
+}
+.qr-card::before{
+  content:'';position:absolute;inset:-1px;border-radius:calc(var(--r-lg) + 1px);
+  background:linear-gradient(135deg,rgba(0,180,216,0.2),transparent 50%,rgba(0,229,160,0.1));
+  mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  mask-composite:exclude;padding:1px;
+}
+.qr-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.qr-vitaid-logo{display:flex;align-items:center}
+.qr-vitaid-logo .v{font-size:13px;font-weight:800;color:rgba(255,255,255,0.6)}
+.qr-vitaid-logo .i{background:var(--grad);color:#0D0F14;font-weight:800;font-size:13px;padding:0 3px;border-radius:3px;margin-left:1px}
+.qr-rg-badge{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-soft)}
+.qr-name{font-size:20px;font-weight:800;margin-bottom:4px}
+.qr-meta-row{display:flex;gap:16px;margin-bottom:20px}
+.qr-meta-item{font-size:12px;color:var(--text-soft)}
+.qr-meta-item strong{display:block;font-size:13px;color:#fff;font-weight:700}
+.qr-square{
+  width:120px;height:120px;margin:0 auto 20px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+}
+.qr-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;width:84px;height:84px}
+.qr-cell{border-radius:1px}
+.qr-alert-strip{
+  background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);
+  border-radius:8px;padding:10px 14px;
+  display:flex;align-items:center;gap:8px;font-size:12px;
+}
+.qr-alert-dot{width:6px;height:6px;border-radius:50%;background:#EF4444;flex-shrink:0}
+.qr-alert-text strong{color:#EF4444}
+.qr-alert-text{color:rgba(255,255,255,0.6)}
+
+/* FEATURE GRID */
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:60px}
+.feature-card{
+  background:var(--dark3);border:1px solid var(--border-dark);
+  border-radius:var(--r-lg);padding:32px;
+  transition:border-color .3s,transform .3s;
+}
+.feature-card:hover{border-color:rgba(0,180,216,0.2);transform:translateY(-3px)}
+.feature-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(0,180,216,0.1);
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+}
+.feature-icon svg{width:20px;height:20px;stroke:var(--cyan);fill:none;stroke-width:1.8}
+.feature-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.feature-desc{font-size:14px;color:rgba(255,255,255,0.45);line-height:1.6}
+
+/* ══════════════════════════════
+   MACBOOK MOCKUP
+══════════════════════════════ */
+.macbook-section{
+  background:var(--dark2);
+  padding:100px 48px;
+  overflow:hidden;
+}
+.macbook-inner{max-width:1100px;margin:0 auto;text-align:center}
+.macbook-wrap{
+  position:relative;
+  margin-top:64px;
+  perspective:1200px;
+}
+.macbook{
+  position:relative;
+  display:inline-block;
+  width:100%;
+  max-width:900px;
+  opacity:0;
+  transform:translateY(60px) scale(0.96);
+  transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+}
+.macbook.visible{opacity:1;transform:translateY(0) scale(1)}
+
+/* Lid (screen part) */
+.mac-lid{
+  background:linear-gradient(180deg,#2a2a2c 0%,#1c1c1e 100%);
+  border-radius:16px 16px 0 0;
+  padding:14px 14px 0;
+  border:1px solid rgba(255,255,255,0.08);
+  border-bottom:none;
+  position:relative;
+}
+.mac-lid::before{
+  content:'';
+  position:absolute;top:8px;left:50%;transform:translateX(-50%);
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,0.12);
+}
+.mac-screen{
+  background:#0D0F14;
+  border-radius:6px;
+  overflow:hidden;
+  position:relative;
+  aspect-ratio:16/10;
+}
+
+/* Hinge */
+.mac-hinge{
+  height:6px;
+  background:linear-gradient(180deg,#1a1a1c,#2c2c2e);
+  border-left:1px solid rgba(255,255,255,0.06);
+  border-right:1px solid rgba(255,255,255,0.06);
+}
+
+/* Base */
+.mac-base{
+  background:linear-gradient(180deg,#2c2c2e 0%,#242426 100%);
+  height:22px;border-radius:0 0 12px 12px;
+  border:1px solid rgba(255,255,255,0.07);
+  border-top:none;
+  position:relative;
+}
+.mac-base::after{
+  content:'';
+  position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
+  width:80px;height:4px;border-radius:2px;
+  background:rgba(255,255,255,0.08);
+}
+
+/* Dashboard inside screen */
+.dash-inside{
+  display:flex;height:100%;font-size:9px;
+}
+.dash-sidebar{
+  width:18%;background:#0D0F14;
+  border-right:1px solid rgba(255,255,255,0.07);
+  padding:12px 8px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;
+}
+.dash-logo-sm{display:flex;align-items:center;margin-bottom:12px;padding:0 4px}
+.dash-logo-sm .v{font-size:10px;font-weight:800;color:#fff}
+.dash-logo-sm .i{background:var(--grad);color:#0D0F14;font-weight:800;font-size:10px;padding:0 2px;border-radius:2px;margin-left:1px}
+.dash-pro{background:rgba(255,255,255,0.08);border-radius:3px;font-size:7px;font-weight:700;color:rgba(255,255,255,0.5);padding:1px 4px;margin-left:4px;letter-spacing:.04em}
+.dash-section-label{font-size:6.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:6px 4px 3px;margin-top:4px}
+.dash-nav-item{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 6px;border-radius:5px;
+  font-size:7.5px;font-weight:600;color:rgba(255,255,255,0.45);
+  cursor:pointer;
+}
+.dash-nav-item.active{background:rgba(0,229,160,0.12);color:var(--green)}
+.dash-nav-item svg{width:9px;height:9px;flex-shrink:0}
+.dash-badge{
+  margin-left:auto;background:var(--green);color:#0D0F14;
+  font-size:6px;font-weight:800;border-radius:10px;padding:1px 4px;
+}
+.dash-avatar-row{
+  margin-top:auto;display:flex;align-items:center;gap:5px;
+  padding:6px;border-top:1px solid rgba(255,255,255,0.06);
+}
+.dash-av-sm{
+  width:18px;height:18px;border-radius:50%;
+  background:var(--grad);display:flex;align-items:center;justify-content:center;
+  font-size:6px;font-weight:800;color:#0D0F14;flex-shrink:0;
+}
+.dash-av-name{font-size:6.5px;font-weight:600;color:rgba(255,255,255,0.6);line-height:1.3}
+.dash-av-crm{font-size:5.5px;color:rgba(255,255,255,0.3)}
+
+.dash-main{flex:1;background:#F5F7FA;overflow:hidden;display:flex;flex-direction:column}
+.dash-topbar{
+  background:#fff;border-bottom:1px solid rgba(0,0,0,0.06);
+  padding:8px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.dash-topbar-title{font-size:9px;font-weight:800;color:#0D0F14}
+.dash-topbar-date{font-size:7px;color:#9CA3AF}
+.dash-topbar-time{font-size:7.5px;font-weight:700;color:#0D0F14;background:#F0F2F6;padding:3px 7px;border-radius:6px}
+
+.dash-body{padding:10px 14px;overflow:hidden;flex:1}
+.dash-hero-card{
+  background:linear-gradient(135deg,#0D0F14 0%,#1A1E26 100%);
+  border-radius:8px;padding:10px 14px;
+  display:flex;align-items:center;gap:10px;margin-bottom:10px;
+}
+.dash-hero-av{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--grad);display:flex;align-items:center;justify-content:center;
+  font-size:8px;font-weight:800;color:#0D0F14;flex-shrink:0;
+}
+.dash-hero-greeting{font-size:7px;color:rgba(255,255,255,0.5);margin-bottom:2px}
+.dash-hero-name{font-size:10px;font-weight:800;color:#fff}
+.dash-hero-crm{font-size:6.5px;color:rgba(255,255,255,0.4)}
+.dash-hero-date{margin-left:auto;text-align:right;font-size:6.5px;color:rgba(255,255,255,0.3)}
+
+.dash-kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}
+.dash-kpi{background:#fff;border-radius:6px;padding:8px 10px;border:1px solid rgba(0,0,0,0.06)}
+.dash-kpi-label{font-size:5.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#9CA3AF;margin-bottom:4px}
+.dash-kpi-val{font-size:14px;font-weight:800;color:#0D0F14;line-height:1}
+.dash-kpi-val.green{color:var(--green)}
+.dash-kpi-sub{font-size:5.5px;color:#9CA3AF;margin-top:3px}
+
+.dash-kpi-grid2{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
+.dash-kpi2{background:#fff;border-radius:6px;padding:6px 10px;border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:6px}
+.dash-kpi2-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dash-kpi2-label{font-size:5.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9CA3AF}
+.dash-kpi2-val{font-size:11px;font-weight:800;color:#0D0F14;margin-top:1px}
+
+.dash-search{
+  background:#fff;border:1px solid rgba(0,0,0,0.08);
+  border-radius:6px;padding:5px 10px;
+  display:flex;align-items:center;gap:5px;margin-bottom:6px;
+}
+.dash-search-icon{width:8px;height:8px;opacity:.3}
+.dash-search-placeholder{font-size:7px;color:#9CA3AF}
+
+.dash-filters{display:flex;gap:4px;margin-bottom:8px}
+.dash-filter{font-size:6.5px;font-weight:600;padding:3px 8px;border-radius:20px;color:#9CA3AF;background:#fff;border:1px solid rgba(0,0,0,0.08)}
+.dash-filter.active{background:var(--green);color:#0D0F14;border-color:transparent}
+
+.dash-list-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.dash-list-title{font-size:8px;font-weight:800;color:#0D0F14}
+.dash-list-count{font-size:6.5px;color:#9CA3AF}
+.dash-patient-row{
+  background:#fff;border-radius:6px;padding:7px 10px;
+  display:flex;align-items:center;gap:7px;
+  margin-bottom:3px;border:1px solid rgba(0,0,0,0.05);
+}
+.dash-pat-av{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--grad);display:flex;align-items:center;justify-content:center;
+  font-size:6px;font-weight:800;color:#0D0F14;flex-shrink:0;
+}
+.dash-pat-av.blue{background:linear-gradient(135deg,#00B4D8,#00E5A0)}
+.dash-pat-av.purple{background:linear-gradient(135deg,#8B5CF6,#EC4899)}
+.dash-pat-name{font-size:7.5px;font-weight:700;color:#0D0F14}
+.dash-pat-meta{font-size:6px;color:#9CA3AF}
+.dash-status{
+  margin-left:auto;display:flex;align-items:center;gap:3px;
+  font-size:6px;font-weight:700;
+}
+.dash-status.ok{color:var(--green)}
+.dash-status.open{color:#3B82F6}
+.dash-status-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.dash-pat-date{font-size:6px;color:#9CA3AF;text-align:right;margin-left:8px}
+
+/* ══════════════════════════════
+   RG CARD MOCKUP (Paciente)
+══════════════════════════════ */
+.rg-section{
+  background:var(--dark2);
+  padding:100px 48px;
+  overflow:hidden;
+}
+.rg-showcase{
+  display:flex;align-items:center;gap:80px;
+  max-width:1100px;margin:64px auto 0;
+}
+.rg-card-wrap{
+  flex-shrink:0;
+  opacity:0;transform:translateX(-40px);
+  transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);
+}
+.rg-card-wrap.visible{opacity:1;transform:none}
+.rg-card-3d{
+  width:320px;
+  background:linear-gradient(145deg,#1A1E26,#131619);
+  border-radius:20px;
+  padding:24px;
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:
+    0 0 0 1px rgba(0,229,160,0.08),
+    0 24px 48px rgba(0,0,0,0.5),
+    0 4px 16px rgba(0,229,160,0.08);
+  position:relative;overflow:hidden;
+  transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s;
+}
+.rg-card-3d:hover{
+  transform:translateY(-6px) rotate(-1deg);
+  box-shadow:0 0 0 1px rgba(0,229,160,0.15),0 32px 64px rgba(0,0,0,0.6),0 8px 24px rgba(0,229,160,0.12);
+}
+.rg-card-3d::before{
+  content:'';position:absolute;top:-40%;left:-20%;
+  width:60%;height:80%;
+  background:radial-gradient(ellipse,rgba(0,229,160,0.06),transparent 70%);
+  pointer-events:none;
+}
+.rg-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px}
+.rg-card-logo{display:flex;flex-direction:column;gap:2px}
+.rg-card-logo-row{display:flex;align-items:center}
+.rg-card-logo-row .v{font-size:14px;font-weight:800;color:#fff}
+.rg-card-logo-row .i{background:var(--grad);color:#0D0F14;font-weight:800;font-size:14px;padding:0 4px;border-radius:4px;margin-left:2px}
+.rg-card-subtitle{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:2px}
+.rg-flip-btn{
+  display:flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:600;color:rgba(255,255,255,0.4);
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);
+  border-radius:100px;padding:4px 10px;cursor:pointer;
+}
+.rg-flip-btn svg{width:10px;height:10px}
+
+.rg-avatar-row{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.rg-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--grad);display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:#0D0F14;flex-shrink:0;
+}
+.rg-name{font-size:16px;font-weight:800;color:#fff;line-height:1.2}
+.rg-cpf{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
+
+.rg-meta-strip{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);
+  border-radius:10px;padding:12px 14px;
+  display:flex;gap:20px;margin-bottom:18px;
+}
+.rg-meta-col .label{font-size:7.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:4px}
+.rg-meta-col .val{font-size:12px;font-weight:800;color:#fff}
+.rg-meta-col .val.green{color:var(--green)}
+
+.rg-bottom-row{display:flex;align-items:center;gap:10px}
+.rg-chip{
+  width:32px;height:32px;border-radius:6px;
+  background:linear-gradient(135deg,rgba(0,229,160,0.2),rgba(0,180,216,0.15));
+  border:1px solid rgba(0,229,160,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;color:var(--green);
+}
+.rg-nfc{width:20px;height:20px;opacity:.3}
+.rg-card-shine{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.04) 0%,transparent 40%,rgba(255,255,255,0.02) 100%);
+  border-radius:20px;pointer-events:none;
+}
+
+.rg-text-side{flex:1}
+.rg-benefit-list{margin-top:24px;display:flex;flex-direction:column;gap:20px}
+.rg-benefit{display:flex;align-items:flex-start;gap:16px}
+.rg-benefit-icon{
+  width:40px;height:40px;border-radius:10px;
+  background:rgba(0,180,216,0.1);border:1px solid rgba(0,180,216,0.15);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.rg-benefit-icon svg{width:18px;height:18px;stroke:var(--cyan);fill:none;stroke-width:1.8}
+.rg-benefit-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.rg-benefit-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.55}
+
+@media(max-width:768px){
+  .rg-showcase{flex-direction:column;gap:48px}
+  .rg-card-3d{width:100%;max-width:320px}
+  .macbook{max-width:100%}
+}
+
+/* ══════════════════════════════
+   PAS — HERO PROBLEMA (split layout)
+══════════════════════════════ */
+.pas-hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:120px 72px 80px;
+  position:relative;overflow:hidden;
+  background:var(--dark);
+}
+.pas-hero-glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 50% 60% at 0% 50%, rgba(0,229,160,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 100% 20%, rgba(0,180,216,0.05) 0%, transparent 50%);
+}
+.pas-hero-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:64px;align-items:center;
+  max-width:1200px;margin:0 auto;width:100%;position:relative;
+}
+.pas-hero-left{text-align:left}
+.pas-h1{
+  font-size:clamp(36px,4.5vw,64px);font-weight:800;
+  line-height:1.05;letter-spacing:-2px;
+  margin:0 0 20px;color:#fff;
+}
+.pas-h1 em{
+  font-style:normal;
+  background:var(--grad);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.pas-sub{
+  font-size:clamp(15px,1.4vw,17px);color:rgba(255,255,255,0.5);
+  line-height:1.7;margin:0 0 36px;max-width:460px;
+}
+.pas-stats{display:flex;gap:32px;margin-top:40px}
+.pas-stat-num{font-size:28px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.pas-stat-label{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;line-height:1.4}
+
+/* Calculadora inline no hero */
+.pas-hero-calc{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,0.08);
+  border-radius:24px;padding:32px;
+  box-shadow:0 24px 64px rgba(0,0,0,0.25);
+  position:relative;
+}
+.pas-hero-calc::before{display:none}
+.phc-title{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:24px;display:flex;align-items:center;gap:8px}
+.phc-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+
+.phc-field{margin-bottom:20px}
+.phc-label{font-size:12px;font-weight:600;color:#9CA3AF;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.phc-val{font-size:13px;font-weight:800;color:#0D0F14}
+.phc-slider{
+  width:100%;-webkit-appearance:none;appearance:none;
+  height:3px;border-radius:2px;outline:none;cursor:pointer;
+  background:#E5E7EB;
+}
+.phc-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+  background:#fff;border:2px solid var(--green);
+  box-shadow:0 2px 8px rgba(0,229,160,0.35);cursor:pointer;
+  transition:transform .15s;
+}
+.phc-slider::-webkit-slider-thumb:hover{transform:scale(1.2)}
+
+.phc-divider{height:1px;background:#F0F2F6;margin:20px 0}
+
+.phc-result{
+  background:linear-gradient(135deg,#0D0F14,#1A1E26);
+  border-radius:14px;padding:20px;text-align:center;
+}
+.phc-result-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:8px}
+.phc-result-num{font-size:40px;font-weight:800;letter-spacing:-2px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:6px}
+.phc-result-sub{font-size:11px;color:rgba(255,255,255,0.35);line-height:1.5}
+.phc-cta{
+  width:100%;margin-top:16px;
+  background:var(--grad);color:#0D0F14;
+  font-family:var(--font);font-weight:700;font-size:14px;
+  padding:14px;border-radius:100px;border:none;cursor:pointer;
+  transition:all .25s;box-shadow:0 0 24px rgba(0,229,160,0.2);
+}
+.phc-cta:hover{transform:translateY(-1px);box-shadow:0 0 36px rgba(0,229,160,0.35)}
+
+@media(max-width:900px){
+  .pas-hero{padding:100px 24px 60px}
+  .pas-hero-inner{grid-template-columns:1fr;gap:40px}
+  .pas-sub{max-width:100%}
+}
+
+/* ══════════════════════════════
+   SEÇÃO PROBLEMA 15 MIN
+══════════════════════════════ */
+.prob-timeline{
+  display:grid;grid-template-columns:1fr 2.5fr 0.8fr;
+  gap:16px;margin-bottom:56px;align-items:stretch;
+}
+.prob-block{
+  border-radius:var(--r-lg);padding:24px;
+  border:1px solid rgba(0,0,0,0.07);
+  background:#fff;
+  display:flex;flex-direction:column;gap:12px;
+}
+.prob-block-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.prob-block-time{font-size:11px;font-weight:700;color:var(--text-soft);letter-spacing:.04em}
+.prob-block-badge{
+  font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 10px;border-radius:100px;
+}
+.prob-block-badge.lost{background:rgba(239,68,68,0.1);color:#EF4444;border:1px solid rgba(239,68,68,0.2)}
+.prob-block-badge.ok{background:rgba(0,196,122,0.1);color:#00C47A;border:1px solid rgba(0,196,122,0.2)}
+.prob-block-badge.rush{background:rgba(245,158,11,0.1);color:#F59E0B;border:1px solid rgba(245,158,11,0.2)}
+
+.prob-block-bar{height:6px;background:#F0F2F6;border-radius:3px;overflow:hidden}
+.prob-block-fill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.16,1,.3,1)}
+.lost-fill{width:100%;background:linear-gradient(90deg,#EF4444,#F87171)}
+.ok-fill{width:100%;background:linear-gradient(90deg,#00C47A,#00E5A0)}
+.rush-fill{width:100%;background:linear-gradient(90deg,#F59E0B,#FCD34D)}
+
+.prob-block-label{font-size:15px;font-weight:800;color:var(--text-dark)}
+.prob-block-quotes{display:flex;flex-direction:column;gap:6px}
+.prob-block-quotes span{
+  font-size:12px;color:var(--text-mid);
+  background:#F5F7FA;border-radius:8px;padding:6px 10px;
+  border-left:3px solid rgba(239,68,68,0.3);
+  font-style:italic;line-height:1.4;
+}
+.prob-block-desc{font-size:13px;color:var(--text-mid);line-height:1.6}
+
+.prob-impact{
+  display:flex;align-items:center;gap:28px;
+  background:var(--dark);border-radius:var(--r-lg);
+  padding:32px 40px;
+}
+.prob-impact-num{
+  font-size:56px;font-weight:800;letter-spacing:-3px;line-height:1;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  white-space:nowrap;flex-shrink:0;
+}
+.prob-impact-text{
+  font-size:17px;color:rgba(255,255,255,0.55);line-height:1.6;
+}
+.prob-impact-text strong{color:#fff;font-weight:800}
+
+@media(max-width:768px){
+  .prob-timeline{grid-template-columns:1fr}
+  .prob-impact{flex-direction:column;text-align:center;padding:24px}
+  .prob-impact-num{font-size:40px}
+}
+
+/* ══════════════════════════════
+   PAS — AGITAÇÃO
+══════════════════════════════ */
+.pas-agit{background:var(--dark2);padding:100px 48px}
+.agit-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+  margin-top:0;
+}
+.agit-card{
+  border-radius:var(--r-lg);padding:32px;
+  border:1px solid rgba(255,255,255,0.07);
+}
+.agit-bad{background:rgba(239,68,68,0.04);border-color:rgba(239,68,68,0.12)}
+.agit-good{background:rgba(0,229,160,0.04);border-color:rgba(0,229,160,0.12)}
+.agit-card-label{
+  font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:24px;display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:100px;
+}
+.agit-card-label.bad{background:rgba(239,68,68,0.1);color:#EF4444;border:1px solid rgba(239,68,68,0.2)}
+.agit-card-label.good{background:rgba(0,229,160,0.1);color:var(--green);border:1px solid rgba(0,229,160,0.2)}
+.agit-timeline{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.agit-step{display:flex;align-items:center;gap:12px}
+.agit-step-time{
+  font-size:11px;font-weight:700;color:rgba(255,255,255,0.3);
+  font-variant-numeric:tabular-nums;width:70px;flex-shrink:0;
+}
+.agit-step-bar{height:8px;border-radius:4px;flex-shrink:0}
+.bad-bar{width:80px;background:rgba(239,68,68,0.4)}
+.ok-bar{width:160px;background:rgba(255,255,255,0.15)}
+.green-bar{width:8px;background:var(--green)}
+.warn-bar{width:20px;background:rgba(245,158,11,0.4)}
+.agit-step-label{font-size:12px;font-weight:600;color:rgba(255,255,255,0.6);line-height:1.4}
+.agit-step-label span{font-weight:400;color:rgba(255,255,255,0.3);font-size:11px}
+.agit-result{
+  display:flex;align-items:center;gap:12px;
+  padding:16px;border-radius:12px;margin-top:4px;
+}
+.bad-result{background:rgba(239,68,68,0.06)}
+.good-result{background:rgba(0,229,160,0.06)}
+.agit-result-num{
+  font-size:40px;font-weight:800;line-height:1;letter-spacing:-2px;
+}
+.bad-result .agit-result-num{color:#EF4444}
+.good-result .agit-result-num{color:var(--green)}
+.agit-result-label{font-size:13px;color:rgba(255,255,255,0.4);font-weight:600}
+
+/* ══════════════════════════════
+   CALCULADORA
+══════════════════════════════ */
+.pas-calc{background:var(--light);padding:100px 48px}
+.pas-calc *{color:var(--text-dark)}
+.calc-card{
+  display:grid;grid-template-columns:1fr 1fr;gap:32px;
+  background:#fff;border-radius:var(--r-lg);
+  padding:40px;margin-top:0;
+  box-shadow:0 4px 40px rgba(0,0,0,0.08);
+  border:1px solid var(--border-light);
+}
+.calc-field{margin-bottom:28px}
+.calc-label{
+  display:block;font-size:13px;font-weight:700;
+  color:var(--text-mid);margin-bottom:12px;letter-spacing:.02em;
+}
+.calc-slider-wrap{display:flex;align-items:center;gap:14px}
+.calc-slider{
+  flex:1;-webkit-appearance:none;appearance:none;
+  height:4px;border-radius:2px;outline:none;
+  background:linear-gradient(90deg, var(--green) var(--pct,50%), #E5E7EB var(--pct,50%));
+  cursor:pointer;
+}
+.calc-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;
+  border-radius:50%;background:#fff;
+  border:2px solid var(--green);
+  box-shadow:0 2px 8px rgba(0,229,160,0.3);
+  cursor:pointer;transition:transform .15s;
+}
+.calc-slider::-webkit-slider-thumb:hover{transform:scale(1.2)}
+.calc-slider-val{
+  font-size:15px;font-weight:800;color:var(--text-dark);
+  min-width:72px;text-align:right;
+}
+
+.calc-result{
+  background:var(--dark);border-radius:var(--r-lg);
+  padding:32px;display:flex;flex-direction:column;justify-content:space-between;
+}
+.calc-result-top{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:28px;
+}
+.calc-result-item{flex:1}
+.calc-result-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.4)!important;margin-bottom:8px}
+.calc-result-num{font-size:28px;font-weight:800;letter-spacing:-1px;line-height:1}
+.calc-result-num.neutral{color:rgba(255,255,255,0.6)!important}
+.calc-result-num.positive{color:var(--green)!important}
+.calc-arrow{font-size:24px;color:rgba(255,255,255,0.2)!important;flex-shrink:0}
+.calc-gain-box{
+  background:rgba(0,229,160,0.08);
+  border:1px solid rgba(0,229,160,0.2);
+  border-radius:12px;padding:20px;text-align:center;margin-bottom:0;
+}
+.calc-gain-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.4)!important;margin-bottom:8px}
+.calc-gain-num{font-size:36px;font-weight:800;letter-spacing:-1.5px;color:var(--green)!important;margin-bottom:6px}
+.calc-gain-sub{font-size:12px;color:rgba(255,255,255,0.35)!important}
+
+@media(max-width:768px){
+  .agit-grid{grid-template-columns:1fr}
+  .calc-card{grid-template-columns:1fr}
+  .pas-hero{padding:100px 20px 60px}
+  .pas-agit{padding:64px 20px}
+  .pas-calc{padding:64px 20px}
+}
+
+/* ══════════════════════════════
+   SEÇÃO PROBLEMA — limpo
+══════════════════════════════ */
+.prob-q-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:16px;margin-bottom:48px;
+}
+.prob-q-card{
+  background:var(--dark3);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:var(--r-lg);padding:28px;
+  transition:border-color .25s;
+}
+.prob-q-card:hover{border-color:rgba(239,68,68,0.2)}
+.prob-q-num{
+  font-size:11px;font-weight:700;letter-spacing:.1em;
+  color:rgba(239,68,68,0.6);margin-bottom:12px;
+}
+.prob-q-question{
+  font-size:17px;font-weight:700;color:#fff;
+  font-style:italic;margin-bottom:10px;line-height:1.35;
+}
+.prob-q-answer{
+  font-size:13px;color:rgba(255,255,255,0.4);
+  line-height:1.6;
+}
+
+.prob-bottom-line{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:var(--r-lg);padding:28px 36px;
+  font-size:17px;color:rgba(255,255,255,0.45);
+  line-height:1.7;text-align:center;
+}
+.prob-bottom-line strong{color:#fff;font-weight:800}
+
+@media(max-width:768px){
+  .prob-q-grid{grid-template-columns:1fr}
+}
+
+/* ══════════════════════════════
+   SOLUÇÃO — DIFERENCIAIS
+══════════════════════════════ */
+.sol-diff{display:flex;align-items:flex-start;gap:16px}
+.sol-diff-icon{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.15);
+  display:flex;align-items:center;justify-content:center;
+}
+.sol-diff-icon svg{width:20px;height:20px}
+.sol-diff-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:6px}
+.sol-diff-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.65}
+
+@media(max-width:768px){
+  .sol-diff-icon{width:36px;height:36px}
+}
+
+/* ══════════════════════════════
+   CARROSSEL PARCEIROS
+══════════════════════════════ */
+.carousel-section{
+  background:var(--dark2);
+  padding:40px 0;
+  border-top:1px solid var(--border-dark);
+  border-bottom:1px solid var(--border-dark);
+  overflow:hidden;
+}
+.carousel-label{
+  text-align:center;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-xsoft);margin-bottom:28px;
+}
+.carousel-track-wrap{
+  position:relative;
+  overflow:hidden;
+}
+.carousel-track-wrap::before,
+.carousel-track-wrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none;
+}
+.carousel-track-wrap::before{
+  left:0;
+  background:linear-gradient(90deg,var(--dark2),transparent);
+}
+.carousel-track-wrap::after{
+  right:0;
+  background:linear-gradient(-90deg,var(--dark2),transparent);
+}
+.carousel-track{
+  display:flex;align-items:center;gap:0;
+  width:max-content;
+  animation:carousel-scroll 18s linear infinite;
+}
+.carousel-track:hover{animation-play-state:paused}
+@keyframes carousel-scroll{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+.carousel-item{
+  display:flex;align-items:center;gap:14px;
+  padding:0 48px;
+  border-right:1px solid rgba(255,255,255,0.06);
+  white-space:nowrap;
+}
+.carousel-logo-box{
+  width:52px;height:52px;border-radius:12px;
+  overflow:hidden;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:#fff;
+}
+.carousel-logo-box.dark{background:var(--dark3);border:1px solid rgba(255,255,255,0.08)}
+.carousel-logo-box img{width:100%;height:100%;object-fit:contain}
+
+/* Logo Sincra em SVG inline */
+.sincra-logo{
+  font-size:16px;font-weight:800;
+  color:#1E3EFF;font-family:var(--font);
+  letter-spacing:-0.5px;
+}
+/* Logo Link School */
+.link-logo{
+  font-size:11px;font-weight:800;color:#fff;
+  font-family:var(--font);letter-spacing:.02em;
+  text-transform:uppercase;line-height:1.3;
+}
+.carousel-name{
+  font-size:13px;font-weight:700;
+  color:rgba(255,255,255,0.35);
+  letter-spacing:.04em;text-transform:uppercase;
+}
+
+/* ══════════════════════════════
+   ANIMAÇÕES ENTRADA
+══════════════════════════════ */
+.reveal{
+  opacity:0;transform:translateY(32px);
+  transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);
+}
+.reveal.visible{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media(max-width:768px){
+  nav{padding:16px 20px}
+  section{padding:64px 20px}
+  .home-hero,.med-hero,.pac-hero{padding:100px 20px 60px}
+  .choice-grid{grid-template-columns:1fr}
+  .how-steps{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr}
+  .feature-grid{grid-template-columns:1fr}
+  .proof-bar{padding:32px 20px;gap:24px}
+  .proof-divider{display:none}
+  .testimonial-box{padding:36px 24px}
+  .cta-box{padding:40px 24px}
+  footer{flex-direction:column;text-align:center;padding:32px 20px}
+  .sec-cta-final{padding:80px 20px}
+}
+@media(max-width:480px){
+  .home-h1{letter-spacing:-1px}
+  .med-h1,.pac-h1{letter-spacing:-1px}
 }
 </style>
 </head>
 <body>
 
-<!-- HOME -->
-<div id="home" class="page active">
-  <nav>
-    <a class="logo" onclick="goTo('home')"><span class="vita">vita</span><span class="idb">id</span></a>
-    <button class="nav-btn primary" onclick="document.getElementById('home-wl').scrollIntoView({behavior:'smooth'})">Entrar na lista</button>
-  </nav>
-  <div class="hero-wrap">
-    <div class="bg-glow-green"></div><div class="bg-glow-cyan"></div><div class="bg-grid"></div>
-    <div class="inner">
+<!-- ════════════════════════════════════
+     NAV
+════════════════════════════════════ -->
+<nav id="nav">
+  <a class="nav-logo" onclick="showPage('home')">
+    <span class="vita">vita</span><span class="id-box">id</span>
+  </a>
+  <div id="nav-right">
+    <a class="nav-cta" onclick="scrollToWaitlist()">Entrar na lista</a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════
+     PAGE: HOME
+════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="home-hero" style="padding-top:0">
+    <div class="home-hero-grid"></div>
+    
+    <div class="eyebrow reveal">
+      <span class="eyebrow-dot"></span>
+      Abrindo lista de espera
+    </div>
+
+    <h1 class="home-h1 reveal reveal-delay-1">
+      Sua saúde merece<br><span class="grad-text">um lugar só seu.</span>
+    </h1>
+
+    <p class="home-sub reveal reveal-delay-2">
+      Dois produtos que mudam o que acontece nos primeiros cinco minutos de uma consulta — e o quanto esses cinco minutos definem todo o resto.
+    </p>
+
+    <div class="choice-grid reveal reveal-delay-3">
+      <!-- Médico -->
+      <div class="choice-card med" onclick="showPage('medico')">
+        <div class="choice-icon green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00E5A0" stroke-width="1.8">
+            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+            <rect x="9" y="3" width="6" height="4" rx="1"/>
+            <path d="M9 12h6M9 16h4"/>
+          </svg>
+        </div>
+        <div class="choice-label">Para médicos</div>
+        <div class="choice-title">Chegue preparado.<br>Sempre.</div>
+        <div class="choice-desc">60 segundos de áudio com tudo que você precisa saber antes de o paciente entrar.</div>
+        <div class="choice-cta">
+          Ver o produto
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+
+      <!-- Paciente -->
+      <div class="choice-card pac" onclick="showPage('paciente')">
+        <div class="choice-icon blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8">
+            <rect x="5" y="2" width="14" height="20" rx="2"/>
+            <path d="M12 18h.01"/>
+            <path d="M8 7h8M8 11h5"/>
+          </svg>
+        </div>
+        <div class="choice-label">Para pacientes</div>
+        <div class="choice-title">Sua saúde.<br>Sempre com você.</div>
+        <div class="choice-desc">Preencha uma vez. Leve para qualquer médico, em qualquer cidade, em qualquer emergência.</div>
+        <div class="choice-cta">
+          Ver o produto
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF BAR -->
+  <div class="proof-bar reveal">
+    <div class="proof-item">
+      <div class="proof-num">3x</div>
+      <div class="proof-label">mais eficiente<br>que a consulta tradicional</div>
+    </div>
+    <div class="proof-divider"></div>
+    <div class="proof-item">
+      <div class="proof-num">20min</div>
+      <div class="proof-label">economizados<br>por consulta</div>
+    </div>
+    <div class="proof-divider"></div>
+    <div class="proof-item">
+      <div class="proof-num">1x</div>
+      <div class="proof-label">você preenche.<br>Para sempre.</div>
+    </div>
+    <div class="proof-divider"></div>
+    <div class="proof-item">
+      <div class="proof-num">100%</div>
+      <div class="proof-label">seus dados.<br>Você decide quem acessa.</div>
+    </div>
+  </div>
+
+  <!-- CTA HOME -->
+  <div class="sec-cta-final">
+    <div class="cta-box reveal">
+      <h2 class="cta-h2">Seja um dos primeiros.</h2>
+      <p class="cta-sub">Médicos e pacientes. Acesso antecipado para quem entrar na lista agora.</p>
+      <div class="waitlist-form" id="waitlist-home">
+        <input class="waitlist-input" type="email" placeholder="seu@email.com">
+        <button class="waitlist-btn" onclick="joinWaitlist(this)">Garantir vaga</button>
+      </div>
+      <p class="waitlist-note">Sem spam. Só avisamos quando estiver pronto.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo"><span class="vita">vita</span><span class="id-box">id</span></div>
+    <div class="footer-note">© 2025 vitaid · Todos os direitos reservados</div>
+    <div class="footer-note">LGPD · Seus dados são seus</div>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════
+     PAGE: MÉDICO
+════════════════════════════════════ -->
+<div class="page" id="page-medico">
+
+  <!-- ① HERO — PROBLEMA + CALCULADORA -->
+  <section class="pas-hero">
+    <div class="pas-hero-glow"></div>
+    <div class="pas-hero-inner">
+
+      <!-- ESQUERDA: texto -->
+      <div class="pas-hero-left">
+        <div class="hero-kicker reveal">
+          <span class="ac-dot"></span>
+          Para médicos · Pré-consulta inteligente
+        </div>
+        <h1 class="pas-h1 reveal reveal-delay-1">
+          De cada hora<br>de consulta,<br><em>15 minutos são<br>burocracia.</em>
+        </h1>
+        <p class="pas-sub reveal reveal-delay-2">
+          Você pergunta o nome do remédio, se tem alergia, o que já tentou. Enquanto isso, o que você foi treinado pra fazer — pensar clinicamente — espera.
+        </p>
+        <div class="hero-cta-row reveal reveal-delay-3" style="justify-content:flex-start;margin-bottom:0">
+          <button class="btn-primary" onclick="document.getElementById('waitlist-med').scrollIntoView({behavior:'smooth'})">Quero resolver isso</button>
+          <button class="btn-ghost" onclick="document.getElementById('how-med').scrollIntoView({behavior:'smooth'})">Ver como funciona</button>
+        </div>
+        <div class="pas-stats reveal reveal-delay-4">
+          <div>
+            <div class="pas-stat-num">15 min</div>
+            <div class="pas-stat-label">perdidos por consulta<br>com burocracia</div>
+          </div>
+          <div>
+            <div class="pas-stat-num">+25%</div>
+            <div class="pas-stat-label">de receita potencial<br>por dia</div>
+          </div>
+          <div>
+            <div class="pas-stat-num">60s</div>
+            <div class="pas-stat-label">de áudio com tudo<br>que você precisa</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIREITA: calculadora -->
+      <div class="pas-hero-calc reveal reveal-delay-2" id="calc-med">
+        <div class="phc-title">
+          <span class="phc-dot"></span>
+          O quanto você está perdendo
+        </div>
+
+        <div class="phc-field">
+          <div class="phc-label">
+            Consultas por dia
+            <span class="phc-val" id="phc-val-consultas">5</span>
+          </div>
+          <input type="range" class="phc-slider" id="phc-consultas" min="3" max="15" value="5" oninput="phcUpdate()">
+        </div>
+
+        <div class="phc-field">
+          <div class="phc-label">
+            Duração atual por consulta
+            <span class="phc-val" id="phc-val-duracao">60 min</span>
+          </div>
+          <input type="range" class="phc-slider" id="phc-duracao" min="30" max="90" step="5" value="60" oninput="phcUpdate()">
+        </div>
+
+        <div class="phc-field">
+          <div class="phc-label">
+            Valor por consulta
+            <span class="phc-val" id="phc-val-valor">R$ 600</span>
+          </div>
+          <input type="range" class="phc-slider" id="phc-valor" min="100" max="2000" step="50" value="600" oninput="phcUpdate()">
+        </div>
+
+        <div class="phc-field" style="margin-bottom:0">
+          <div class="phc-label">
+            Dias trabalhados por mês
+            <span class="phc-val" id="phc-val-dias">20 dias</span>
+          </div>
+          <input type="range" class="phc-slider" id="phc-dias" min="10" max="26" value="20" oninput="phcUpdate()">
+        </div>
+
+        <div class="phc-divider"></div>
+
+        <div class="phc-result">
+          <div class="phc-result-label">Você pode faturar a mais por mês</div>
+          <div class="phc-result-num" id="phc-ganho">+ R$ 12.000</div>
+          <div class="phc-result-sub" id="phc-sub">+1 consulta/dia · 20 dias · R$ 600 cada</div>
+        </div>
+
+        <button class="phc-cta" onclick="document.getElementById('waitlist-med').scrollIntoView({behavior:'smooth'})">
+          Quero esse resultado →
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ① MEIO — O PROBLEMA DOS 15 MINUTOS -->
+  <section style="background:var(--dark);padding:100px 48px">
+    <div class="section-inner">
+
+      <div class="sec-tag dark">O problema</div>
+      <h2 class="sec-h2 dark-txt" style="margin-bottom:16px">
+        De 10 a 15 minutos de cada consulta<br>são gastos com <em>anamnese.</em>
+      </h2>
+      <p class="sec-sub light-txt" style="margin-bottom:72px;max-width:520px">
+        Não porque você quer. Porque cada paciente chega como uma página em branco.
+      </p>
+
+      <!-- 4 perguntas em grid simples -->
+      <div class="prob-q-grid">
+        <div class="prob-q-card">
+          <div class="prob-q-num">01</div>
+          <div class="prob-q-question">"Qual remédio você toma?"</div>
+          <div class="prob-q-answer">O paciente não lembra o nome. Procura no celular. Passa 3 minutos.</div>
+        </div>
+        <div class="prob-q-card">
+          <div class="prob-q-num">02</div>
+          <div class="prob-q-question">"Tem alguma alergia?"</div>
+          <div class="prob-q-answer">"Acho que sim... a um antibiótico." Qual? "Não sei o nome."</div>
+        </div>
+        <div class="prob-q-card">
+          <div class="prob-q-num">03</div>
+          <div class="prob-q-question">"Quando começou esse sintoma?"</div>
+          <div class="prob-q-answer">Silêncio. Uma estimativa. Um dado impreciso que vai guiar seu diagnóstico.</div>
+        </div>
+        <div class="prob-q-card">
+          <div class="prob-q-num">04</div>
+          <div class="prob-q-question">"Já fez exame relacionado?"</div>
+          <div class="prob-q-answer">"Fiz, mas não trouxe." Ou: "Está no e-mail mas não consigo abrir."</div>
+        </div>
+      </div>
+
+      <!-- Linha de impacto -->
+      <div class="prob-bottom-line reveal">
+        Isso acontece em <strong>toda consulta.</strong> Com todo paciente. Todo dia.
+        São até <strong>25 horas por mês</strong> gastas com perguntas que o paciente já sabe responder.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ② AGITAÇÃO -->
+  <section class="pas-agit">
+    <div class="section-inner">
+      <div class="sec-tag dark">O custo real</div>
+      <h2 class="sec-h2 dark-txt">Mais consulta não é<br>melhor atendimento.<br><em>É mais dinheiro.</em></h2>
+      <p class="sec-sub light-txt" style="margin-bottom:56px">Cada minuto perdido com anamnese repetitiva é um minuto que você poderia usar para atender mais um paciente — ou dar uma consulta muito melhor.</p>
+
+      <div class="agit-grid">
+        <!-- Cenário SEM vitaid -->
+        <div class="agit-card agit-bad">
+          <div class="agit-card-label bad">Sem vitaid</div>
+          <div class="agit-scene">
+            <div class="agit-timeline">
+              <div class="agit-step bad-step">
+                <div class="agit-step-time">0–15 min</div>
+                <div class="agit-step-bar bad-bar"></div>
+                <div class="agit-step-label">Anamnese manual<br><span>Qual remédio? Tem alergia? Quando começou?</span></div>
+              </div>
+              <div class="agit-step">
+                <div class="agit-step-time">15–55 min</div>
+                <div class="agit-step-bar ok-bar"></div>
+                <div class="agit-step-label">Consulta clínica<br><span>O que você realmente sabe fazer</span></div>
+              </div>
+              <div class="agit-step">
+                <div class="agit-step-time">55–60 min</div>
+                <div class="agit-step-bar warn-bar"></div>
+                <div class="agit-step-label">Correria<br><span>Prescrição às pressas</span></div>
+              </div>
+            </div>
+            <div class="agit-result bad-result">
+              <div class="agit-result-num">5</div>
+              <div class="agit-result-label">consultas/dia</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cenário COM vitaid -->
+        <div class="agit-card agit-good">
+          <div class="agit-card-label good">Com vitaid</div>
+          <div class="agit-scene">
+            <div class="agit-timeline">
+              <div class="agit-step">
+                <div class="agit-step-time">0–1 min</div>
+                <div class="agit-step-bar green-bar"></div>
+                <div class="agit-step-label">One Minute Summary<br><span>Contexto completo antes de entrar</span></div>
+              </div>
+              <div class="agit-step">
+                <div class="agit-step-time">1–40 min</div>
+                <div class="agit-step-bar ok-bar"></div>
+                <div class="agit-step-label">Consulta clínica completa<br><span>Foco total no que importa</span></div>
+              </div>
+              <div class="agit-step">
+                <div class="agit-step-time">40–45 min</div>
+                <div class="agit-step-bar green-bar"></div>
+                <div class="agit-step-label">Prescrição com calma<br><span>Sem correria, sem erro</span></div>
+              </div>
+            </div>
+            <div class="agit-result good-result">
+              <div class="agit-result-num">6–7</div>
+              <div class="agit-result-label">consultas/dia</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ SOLUÇÃO — END BENEFIT -->
+  <section style="background:var(--dark);padding:100px 48px">
+    <div class="section-inner">
+      <div class="sec-tag dark">A solução</div>
+      <h2 class="sec-h2 dark-txt" style="margin-bottom:16px">Você entra na sala<br><em>já sabendo tudo.</em></h2>
+      <p class="sec-sub light-txt" style="margin-bottom:64px">Antes de abrir a porta, 60 segundos de áudio com o contexto completo do paciente. Mais precisão, mais tempo, mais faturamento.</p>
+
+      <!-- Layout split: card à esquerda, diferenciais à direita -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:0">
+
+        <!-- AUDIO CARD -->
+        <div class="audio-card reveal">
+          <div class="ac-header">
+            <div class="ac-badge"><div class="ac-dot"></div>One Minute Summary · Vitaid</div>
+            <div class="ac-time-badge">0:38 / 1:00</div>
+          </div>
+          <div class="ac-name">André Mendes</div>
+          <div class="ac-meta">45 anos · Endocrinologia · Consulta 14h00</div>
+          <div class="ac-tags">
+            <span class="ac-tag warn">⚠ Alergia: sulfonamidas</span>
+            <span class="ac-tag ok">HbA1c 7.8%</span>
+            <span class="ac-tag info">Metformina 850mg</span>
+            <span class="ac-tag info">Picos noturnos</span>
+          </div>
+          <div class="ac-wave">
+            <span class="played"></span><span class="played"></span><span class="played"></span>
+            <span class="played"></span><span class="played"></span><span class="played"></span>
+            <span class="played"></span><span class="played"></span><span class="played"></span>
+            <span class="played"></span><span class="played"></span><span class="played"></span>
+            <span class="played"></span><span class="played"></span><span class="played"></span>
+            <span class="played"></span><span class="played"></span><span class="played"></span>
+            <span class="unplayed"></span><span class="unplayed"></span><span class="unplayed"></span>
+            <span class="unplayed"></span><span class="unplayed"></span><span class="unplayed"></span>
+            <span class="unplayed"></span><span class="unplayed"></span><span class="unplayed"></span>
+            <span class="unplayed"></span><span class="unplayed"></span><span class="unplayed"></span>
+          </div>
+          <div class="ac-player-row">
+            <button class="ac-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="ac-progress-wrap">
+              <div class="ac-progress"><div class="ac-fill"></div></div>
+              <div class="ac-time">0:22</div>
+            </div>
+          </div>
+
+          <!-- Perguntas sugeridas pela IA -->
+          <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.07)">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px">Perguntas sugeridas pela IA</div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.12);border-radius:8px;padding:8px 12px;font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:8px">
+                <span style="color:var(--green);font-size:10px">✦</span>
+                "A dificuldade com dieta começou junto com o estresse?"
+              </div>
+              <div style="background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.12);border-radius:8px;padding:8px 12px;font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:8px">
+                <span style="color:var(--green);font-size:10px">✦</span>
+                "Os picos noturnos acontecem em qual horário?"
+              </div>
+              <div style="background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.12);border-radius:8px;padding:8px 12px;font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:8px">
+                <span style="color:var(--green);font-size:10px">✦</span>
+                "Está fazendo monitoramento em casa?"
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Diferenciais -->
+        <div class="reveal reveal-delay-1" style="display:flex;flex-direction:column;gap:28px">
+
+          <div class="sol-diff">
+            <div class="sol-diff-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+            </div>
+            <div>
+              <div class="sol-diff-title">Exames interligados</div>
+              <div class="sol-diff-desc">O vitaid cruza resultados de exames ao longo do tempo. Você vê tendências — não só o último número. Colesterol subiu 12 pontos desde dezembro? Você já sabe antes de entrar na sala.</div>
+            </div>
+          </div>
+
+          <div class="sol-diff">
+            <div class="sol-diff-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </div>
+            <div>
+              <div class="sol-diff-title">Insights gerados por IA</div>
+              <div class="sol-diff-desc">A IA identifica padrões nos dados do paciente e destaca o que merece atenção — correlações entre sintomas, medicamentos e resultados que você levaria minutos para perceber.</div>
+            </div>
+          </div>
+
+          <div class="sol-diff">
+            <div class="sol-diff-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            </div>
+            <div>
+              <div class="sol-diff-title">Perguntas sugeridas</div>
+              <div class="sol-diff-desc">Com base no histórico e nos dados do paciente, o vitaid sugere as perguntas mais relevantes para aquela consulta. Você chega com o roteiro certo — e faz as perguntas que realmente importam.</div>
+            </div>
+          </div>
+
+          <div class="sol-diff" style="background:rgba(0,229,160,0.04);border:1px solid rgba(0,229,160,0.12);border-radius:var(--r-lg);padding:20px;margin-top:4px">
+            <div class="sol-diff-icon" style="background:rgba(0,229,160,0.12);border-color:rgba(0,229,160,0.25)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+            </div>
+            <div>
+              <div class="sol-diff-title" style="display:flex;align-items:center;gap:8px">
+                Exporta direto pro seu prontuário
+                <span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Novo</span>
+              </div>
+              <div class="sol-diff-desc">Depois da consulta, você não escreve mais nada. O vitaid exporta o resumo estruturado direto para o prontuário que você já usa. Sem retrabalho. Sem digitar de novo.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARROSSEL PARCEIROS -->
+  <div class="carousel-section" id="carousel-med">
+    <div class="carousel-label">Parceiros & Validadores</div>
+    <div class="carousel-track-wrap">
+      <div class="carousel-track" id="track-med">
+        <div class="carousel-item"><div class="carousel-logo-box"><span class="sincra-logo">sincra</span></div><span class="carousel-name">Sincra</span></div>
+        <div class="carousel-item"><div class="carousel-logo-box dark" style="background:linear-gradient(135deg,#0D1117,#1a1f2e)"><span class="link-logo" style="font-size:9px;text-align:center;padding:4px">Link<br>School</span></div><span class="carousel-name">Link School of Business</span></div>
+        <div class="carousel-item"><div class="carousel-logo-box dark"><svg viewBox="0 0 40 40" width="32" height="32"><circle cx="20" cy="20" r="18" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/><text x="20" y="25" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.5)" font-family="sans-serif" font-weight="700">AE</text></svg></div><span class="carousel-name">Hospital Albert Einstein</span></div>
+        <div class="carousel-item"><div class="carousel-logo-box dark" style="background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.15)"><span style="font-size:11px;font-weight:800;color:var(--green)">4.9★</span></div><span class="carousel-name">Satisfação dos médicos</span></div>
+        <div class="carousel-item"><div class="carousel-logo-box"><span class="sincra-logo">sincra</span></div><span class="carousel-name">Sincra</span></div>
+        <div class="carousel-item"><div class="carousel-logo-box dark" style="background:linear-gradient(135deg,#0D1117,#1a1f2e)"><span class="link-logo" style="font-size:9px;text-align:center;padding:4px">Link<br>School</span></div><span class="carousel-name">Link School of Business</span></div>
+        <div class="carousel-item"><div class="carousel-logo-box dark"><svg viewBox="0 0 40 40" width="32" height="32"><circle cx="20" cy="20" r="18" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/><text x="20" y="25" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.5)" font-family="sans-serif" font-weight="700">AE</text></svg></div><span class="carousel-name">Hospital Albert Einstein</span></div>
+        <div class="carousel-item"><div class="carousel-logo-box dark" style="background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.15)"><span style="font-size:11px;font-weight:800;color:var(--green)">4.9★</span></div><span class="carousel-name">Satisfação dos médicos</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MACBOOK MOCKUP -->
+  <section class="macbook-section">
+    <div class="macbook-inner">
+      <div class="sec-tag dark" style="display:inline-block">A plataforma</div>
+      <h2 class="sec-h2 dark-txt" style="margin-bottom:12px">Tudo num só lugar.<br><em>Antes de entrar na sala.</em></h2>
+      <p class="sec-sub light-txt" style="margin:0 auto">Dashboard completo com pré-consultas, histórico de pacientes e One Minute Summary — acessível de qualquer dispositivo.</p>
+
+      <div class="macbook-wrap">
+        <div class="macbook" id="macbook-med">
+          <!-- Lid -->
+          <div class="mac-lid">
+            <div class="mac-screen">
+              <!-- Dashboard vitaid fiel ao print -->
+              <div class="dash-inside">
+                <!-- Sidebar -->
+                <div class="dash-sidebar">
+                  <div class="dash-logo-sm">
+                    <span class="v">vita</span><span class="i">id</span>
+                    <span class="dash-pro">PRO</span>
+                  </div>
+                  <div class="dash-section-label">Principal</div>
+                  <div class="dash-nav-item active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                    Dashboard
+                  </div>
+                  <div class="dash-nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+                    Pré-Consultas
+                    <span class="dash-badge">1</span>
+                  </div>
+                  <div class="dash-section-label">Pacientes</div>
+                  <div class="dash-nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                    Pacientes
+                    <span class="dash-badge">3</span>
+                  </div>
+                  <div class="dash-nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                    CRM & Retornos
+                  </div>
+                  <div class="dash-section-label">Workspace</div>
+                  <div class="dash-nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    Templates
+                  </div>
+                  <div class="dash-nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Meu Perfil
+                  </div>
+                  <div class="dash-avatar-row">
+                    <div class="dash-av-sm">LB</div>
+                    <div>
+                      <div class="dash-av-name">Dr. lucas borelli</div>
+                      <div class="dash-av-crm">CRM 09876543 · SP</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Main -->
+                <div class="dash-main">
+                  <div class="dash-topbar">
+                    <div>
+                      <div class="dash-topbar-title">Dashboard</div>
+                      <div class="dash-topbar-date">Quarta, 22 de Abril</div>
+                    </div>
+                    <div class="dash-topbar-time">11:11 · Qua, 22 Abr</div>
+                  </div>
+                  <div class="dash-body">
+                    <!-- Hero card -->
+                    <div class="dash-hero-card">
+                      <div class="dash-hero-av">LB</div>
+                      <div>
+                        <div class="dash-hero-greeting">Bom dia,</div>
+                        <div class="dash-hero-name">Dr. lucas borelli</div>
+                        <div class="dash-hero-crm">Dermatologia · CRM 09876543–SP</div>
+                      </div>
+                      <div class="dash-hero-date">QUA · 22 ABR · 2026</div>
+                    </div>
+                    <!-- KPIs -->
+                    <div class="dash-kpi-grid">
+                      <div class="dash-kpi">
+                        <div class="dash-kpi-label">Tempo economizado</div>
+                        <div class="dash-kpi-val green">8min</div>
+                        <div class="dash-kpi-sub">Responda pré-consultas pra ver aqui.</div>
+                      </div>
+                      <div class="dash-kpi">
+                        <div class="dash-kpi-label">Valor potencial</div>
+                        <div class="dash-kpi-val">R$ 33</div>
+                        <div class="dash-kpi-sub">Com base em ~0 pacientes extras/mês</div>
+                      </div>
+                      <div class="dash-kpi">
+                        <div class="dash-kpi-label">Tempo médio de briefing</div>
+                        <div class="dash-kpi-val">1:16</div>
+                        <div class="dash-kpi-sub">Baseado em <strong>2 briefings</strong> gerados esta semana</div>
+                      </div>
+                    </div>
+                    <div class="dash-kpi-grid2">
+                      <div class="dash-kpi2">
+                        <div class="dash-kpi2-dot" style="background:#9CA3AF"></div>
+                        <div><div class="dash-kpi2-label">Total pacientes</div><div class="dash-kpi2-val">2</div></div>
+                      </div>
+                      <div class="dash-kpi2">
+                        <div class="dash-kpi2-dot" style="background:#F59E0B"></div>
+                        <div><div class="dash-kpi2-label">Pendentes</div><div class="dash-kpi2-val">0</div></div>
+                      </div>
+                      <div class="dash-kpi2">
+                        <div class="dash-kpi2-dot" style="background:var(--green)"></div>
+                        <div><div class="dash-kpi2-label">Respondidas</div><div class="dash-kpi2-val">2</div></div>
+                      </div>
+                    </div>
+                    <!-- Search -->
+                    <div class="dash-search">
+                      <svg class="dash-search-icon" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                      <span class="dash-search-placeholder">Buscar paciente...</span>
+                    </div>
+                    <!-- Filters -->
+                    <div class="dash-filters">
+                      <div class="dash-filter active">Todos</div>
+                      <div class="dash-filter">Hoje</div>
+                      <div class="dash-filter">Esta semana</div>
+                      <div class="dash-filter">Este mês</div>
+                      <div class="dash-filter">Pendentes</div>
+                      <div class="dash-filter">Respondidas</div>
+                    </div>
+                    <!-- List -->
+                    <div class="dash-list-header">
+                      <div class="dash-list-title">Pré-consultas</div>
+                      <div class="dash-list-count">3 pré-consultas</div>
+                    </div>
+                    <div class="dash-patient-row">
+                      <div class="dash-pat-av">DG</div>
+                      <div>
+                        <div class="dash-pat-name">Daniel Garrote Schocair</div>
+                        <div class="dash-pat-meta">(11) 99603–2191 · 17 anos</div>
+                      </div>
+                      <div class="dash-status ok"><div class="dash-status-dot"></div>Respondida</div>
+                      <div class="dash-pat-date">ontem<br>15:31</div>
+                    </div>
+                    <div class="dash-patient-row">
+                      <div class="dash-pat-av blue">LS</div>
+                      <div>
+                        <div class="dash-pat-name">lucas silva</div>
+                        <div class="dash-pat-meta">(19) 97365–2819 · 19 anos</div>
+                      </div>
+                      <div class="dash-status ok"><div class="dash-status-dot"></div>Respondida</div>
+                      <div class="dash-pat-date">19/04<br>18:39</div>
+                    </div>
+                    <div class="dash-patient-row">
+                      <div class="dash-pat-av purple">MS</div>
+                      <div>
+                        <div class="dash-pat-name">maria da silva</div>
+                        <div class="dash-pat-meta">(11) 11928–3710</div>
+                      </div>
+                      <div class="dash-status open"><div class="dash-status-dot"></div>Aberto</div>
+                      <div class="dash-pat-date">19/04<br>17:55</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mac-hinge"></div>
+          <div class="mac-base"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section class="sec-virada" id="how-med">
+    <div class="section-inner">
+      <div class="sec-tag dark">Como funciona</div>
+      <h2 class="sec-h2 dark-txt">Três passos.<br><em>Uma consulta diferente.</em></h2>
+      <p class="sec-sub light-txt">O vitaid encaixa no seu fluxo atual. Sem mudar sua rotina.</p>
       
-      <h1>Sua saúde<br>tem um <em>lugar</em> agora.</h1>
-      <p class="lead">Para médicos que querem consultar melhor.<br>Para pacientes que merecem ser conhecidos.</p>
-      <div class="choices">
-        <button class="choice" onclick="goTo('medico')">
-          <div class="choice-ico" style="background:rgba(0,180,216,0.12)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round"><path d="M9 12h6M12 9v6M12 3a9 9 0 100 18A9 9 0 0012 3z"/></svg></div>
-          <div class="choice-body">
-            <div class="choice-lbl" style="color:var(--cyan)">Para médicos</div>
-            <div class="choice-ttl">Pré-consulta inteligente</div>
-            <div class="choice-dsc">60 segundos de áudio com tudo antes da consulta.</div>
+      <div class="how-steps">
+        <div class="step-card reveal">
+          <div class="step-num">Passo 01</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 12 19.79 19.79 0 011.61 3.47 2 2 0 013.6 1.27h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.91 9a16 16 0 006 6l1.06-.06a2 2 0 012.11.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
           </div>
-          <div class="choice-arr" style="background:rgba(0,180,216,0.12);color:var(--cyan)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 7h10M7 2l5 5-5 5"/></svg></div>
-        </button>
-        <button class="choice" onclick="goTo('paciente')">
-          <div class="choice-ico" style="background:rgba(0,229,160,0.12)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00E5A0" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></div>
-          <div class="choice-body">
-            <div class="choice-lbl" style="color:var(--green)">Para pacientes</div>
-            <div class="choice-ttl">RG da Saúde</div>
-            <div class="choice-dsc">Seus dados em um QR Code. Uma vez. Para sempre.</div>
+          <div class="step-title">Manda o link por WhatsApp</div>
+          <div class="step-desc">Antes da consulta, você envia um link personalizado para o paciente. Ele preenche no celular, no tempo dele. Em qualquer hora.</div>
+        </div>
+        <div class="step-card reveal reveal-delay-1">
+          <div class="step-num">Passo 02</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 19V6l12-3v13M9 19c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm12-3c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2z"/></svg>
           </div>
-          <div class="choice-arr" style="background:rgba(0,229,160,0.12);color:var(--green)"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 7h10M7 2l5 5-5 5"/></svg></div>
-        </button>
-      </div>
-      <div class="proof">
-        <div class="proof-item"><div class="proof-n">20 min</div><div class="proof-l">devolvidos por consulta</div></div>
-        <div class="proof-sep"></div>
-        <div class="proof-item"><div class="proof-n">1x</div><div class="proof-l">preenche, usa para sempre</div></div>
-        <div class="proof-sep"></div>
-        <div class="proof-item"><div class="proof-n">60s</div><div class="proof-l">de resumo por paciente</div></div>
+          <div class="step-title">Aperta play, 60 segundos</div>
+          <div class="step-desc">Antes de entrar na sala, você coloca o fone e ouve o resumo completo gerado por IA — queixa principal, alergias, medicamentos, contexto de vida.</div>
+        </div>
+        <div class="step-card reveal reveal-delay-2">
+          <div class="step-num">Passo 03</div>
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+          <div class="step-title">Consulta que começa no que importa</div>
+          <div class="step-desc">Você abre a porta já sabendo o nome, a queixa, as alergias. O paciente percebe. A consulta vai direto para o que realmente importa.</div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="waitlist-wrap" id="home-wl">
-    <div class="wl-bg"></div>
-    <div class="inner">
-      <h2>Seja o <em>primeiro</em> a saber.</h2>
-      <p class="lead">Acesso antecipado. Convite exclusivo antes do lançamento.</p>
-      <div class="wl-form">
-        <input class="wl-input" type="email" id="home-email" placeholder="seu@email.com.br">
-        <button class="btn primary wl-btn" onclick="submitWL('home')">Garantir meu lugar</button>
+  </section>
+
+  <!-- DEPOIMENTO -->
+  <section class="sec-testimonial">
+    <div class="section-inner">
+      <div class="sec-tag dark" style="text-align:center">O que médicos dizem</div>
+      <div class="testimonial-box reveal">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">Entrei na sala sabendo que o André tinha HbA1c em 7.8%, picos noturnos e alergia a sulfonamidas. Fui direto para o que importava. Ele me olhou diferente. Percebi que nunca tinha me sentido tão preparado numa consulta.</p>
+        <div class="quote-author">
+          <div class="quote-avatar">DR</div>
+          <div>
+            <div class="quote-name">Dr. Ricardo Souza</div>
+            <div class="quote-role">Endocrinologista · São Paulo</div>
+          </div>
+        </div>
       </div>
-      <div class="wl-note">Sem spam. Só o que importa.</div>
-      <div class="wl-success" id="home-ok"><div class="wl-success-t">Você está na lista.</div><div class="wl-success-d">Entraremos em contato com seu convite exclusivo.</div></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="sec-faq">
+    <div class="section-inner">
+      <div class="sec-tag dark">Dúvidas frequentes</div>
+      <h2 class="sec-h2 dark-txt">Perguntas<br><em>que todo médico faz.</em></h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            O paciente precisa baixar algum app?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-a">Não. O paciente recebe um link e preenche direto no navegador do celular. Sem cadastro, sem app, sem atrito.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Funciona para qualquer especialidade?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-a">Sim. Você configura sua especialidade e o formulário de pré-consulta é personalizado automaticamente — as perguntas certas para cada tipo de consulta.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Os dados dos pacientes ficam seguros?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-a">100%. Todos os dados são criptografados em trânsito e em repouso. O vitaid é totalmente aderente à LGPD. Você e o paciente definem quem acessa o quê.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Quanto tempo leva para começar a usar?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-a">Menos de 5 minutos. Você cria sua conta, configura sua especialidade e já tem um link personalizado para enviar ao seu primeiro paciente.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <div class="sec-cta-final">
+    <div class="cta-box reveal">
+      <h2 class="cta-h2">Seja o médico<br>que chega preparado.</h2>
+      <p class="cta-sub">Acesso antecipado para médicos. Primeiros 100 usuários com condições especiais.</p>
+      <div class="waitlist-form" id="waitlist-med">
+        <input class="waitlist-input" type="email" placeholder="seu@email.com">
+        <button class="waitlist-btn" onclick="joinWaitlist(this)">Garantir vaga</button>
+      </div>
+      <p class="waitlist-note">R$19,99/mês · Sem fidelidade · Cancele quando quiser</p>
     </div>
   </div>
+
   <footer>
-    <div class="footer-links"><a href="#">Sobre</a><a href="#">Privacidade</a><a href="#">Contato</a></div>
-    <div class="footer-copy">© 2025 vitaid.</div>
+    <div class="footer-logo"><span class="vita">vita</span><span class="id-box">id</span></div>
+    <div class="footer-note">© 2025 vitaid · Para médicos</div>
+    <div class="footer-note">LGPD · CRM compliance</div>
   </footer>
 </div>
 
-<!-- MÉDICO -->
-<div id="medico" class="page">
-  <nav>
-    <a class="logo" onclick="goTo('home')"><span class="vita">vita</span><span class="idb">id</span></a>
-    <button class="nav-btn ghost" onclick="goTo('home')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 2L4 7l5 5"/></svg>Voltar</button>
-  </nav>
-  <div class="hero-wrap">
-    <div class="bg-glow-cyan"></div><div class="bg-grid"></div>
-    <div class="inner" style="text-align:center">
-      <div class="tag cyan"><span class="dot"></span>Para médicos</div>
-      <h1>Você entra na sala.<br>Já <em>sabe tudo.</em></h1>
-      <p class="lead">Antes de o paciente entrar, você ouve 60 segundos. Histórico, alertas e as perguntas certas.</p>
-      <div class="btn-row">
-        <button class="btn primary" onclick="document.getElementById('med-wl').scrollIntoView({behavior:'smooth'})">Quero acesso antecipado</button>
-        <button class="btn outline" onclick="document.getElementById('med-como').scrollIntoView({behavior:'smooth'})">Como funciona</button>
-      </div>
-      <div class="player">
-        <div class="player-top"><div class="player-dot"></div><div class="player-lbl">One Minute Summary · vitaid</div></div>
-        <div class="player-name">André Mendes</div>
-        <div class="player-meta">45 anos · Endocrinologia · 14h00</div>
-        <div class="player-alert">⚠ Alergia: Sulfonamidas · Pai com DRC estágio 3</div>
-        <div class="wave"><span style="height:6px"></span><span style="height:18px"></span><span style="height:12px"></span><span style="height:26px"></span><span style="height:16px"></span><span style="height:28px"></span><span style="height:20px"></span><span style="height:10px"></span><span style="height:24px"></span><span style="height:18px"></span><span style="height:28px"></span><span style="height:14px"></span><span style="height:22px"></span><span style="height:8px"></span><span style="height:20px"></span><span style="height:26px"></span><span style="height:12px"></span><span style="height:24px"></span></div>
-        <div class="progress"><div class="progress-fill"></div></div>
-        <div class="prog-times"><span>0:39</span><span>1:00</span></div>
-        <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-      </div>
-    </div>
-  </div>
-  <div class="sec">
-    <div class="sec-inner">
-      <div class="tag cyan"><span class="dot"></span>Cenas reais</div>
-      <h2>O que muda na <em>sua consulta.</em></h2>
-      <div class="scenario"><div class="scenario-tag" style="color:var(--cyan)">Paciente com histórico grave</div><p class="scenario-text">A Maria tem 38 anos e chega com dor no peito. O resumo já disse: <strong>angina de esforço suspeita, histórico familiar de infarto, hipertensa desde 2021, LDL de 168.</strong> Você entra preparado para uma conversa que pode terminar num encaminhamento urgente.</p></div>
-      <div class="scenario"><div class="scenario-tag" style="color:var(--cyan)">Paciente novo de outra cidade</div><p class="scenario-text">O Carlos veio de outra cidade, trocou de plano, não trouxe exames. Mas preencheu o formulário. Você tem o histórico dele <strong>desde 2019.</strong> A continuidade do cuidado não depende mais de papel.</p></div>
-      <div class="scenario"><div class="scenario-tag" style="color:var(--cyan)">Plantão de 12 horas</div><p class="scenario-text">15 pacientes. Cada um com uma história. O vitaid transforma 15 monólogos em <strong>15 conversas que partem de onde o cuidado ficou.</strong></p></div>
-    </div>
-  </div>
-  <div class="div"></div>
-  <div class="sec" id="med-como">
-    <div class="sec-inner">
-      <div class="tag cyan"><span class="dot"></span>Como funciona</div>
-      <h2>Três passos.<br><em>Uma consulta diferente.</em></h2>
-      <div class="steps">
-        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-ttl">Você envia um link</div><div class="step-dsc">Um link único por WhatsApp. O paciente preenche no celular, no tempo dele, antes da consulta.</div></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-ttl">A IA organiza tudo</div><div class="step-dsc">Alergias, medicamentos, histórico familiar, hábitos. Estruturado para a sua especialidade.</div></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-ttl">Você ouve 60 segundos</div><div class="step-dsc">Antes de entrar na sala, você escuta o resumo em áudio. A consulta começa no que importa.</div></div></div>
-      </div>
-      <div class="card"><div class="card-icon" style="background:rgba(0,180,216,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div class="card-title">Por especialidade</div><div class="card-desc">O formulário muda conforme sua área. Cardiologista vê o que cardiologista precisa.</div></div>
-      <div class="card"><div class="card-icon" style="background:rgba(0,229,160,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00E5A0" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div class="card-title">Retorno automático</div><div class="card-desc">Configure o prazo. O sistema avisa o paciente. Sem depender de recepcionista.</div></div>
-      <div class="card"><div class="card-icon" style="background:rgba(0,180,216,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><div class="card-title">Perguntas sugeridas pela IA</div><div class="card-desc">O sistema identifica o que merece atenção e sugere as perguntas certas para aquele paciente.</div></div>
-    </div>
-  </div>
-  <div class="div"></div>
-  <div class="sec">
-    <div class="sec-inner">
-      <div class="tag cyan"><span class="dot"></span>Preço</div>
-      <h2>Simples.<br><em>Sem surpresas.</em></h2><br>
-      <div class="price-card">
-        <div class="price-badge">Acesso antecipado</div>
-        <div class="price-name">Para médicos</div>
-        <div class="price-val"><sup>R$</sup>19<sub>,99/mês</sub></div>
-        <div class="price-desc">Até 100 pacientes. Sem contrato. Cancela quando quiser.</div>
-        <ul class="price-list"><li>Formulário por especialidade</li><li>One Minute Summary em áudio</li><li>Alertas de segurança clínica</li><li>Perguntas sugeridas por IA</li><li>Retorno automático de pacientes</li></ul>
-        <button class="btn primary" onclick="document.getElementById('med-wl').scrollIntoView({behavior:'smooth'})">Garantir acesso antecipado</button>
-      </div>
-    </div>
-  </div>
-  <div class="waitlist-wrap" id="med-wl">
-    <div class="wl-bg"></div>
-    <div class="inner">
-      <h2>Pronto para <em>consultar melhor?</em></h2>
-      <p class="lead">Vagas limitadas. Médicos na lista ganham 3 meses grátis.</p>
-      <div class="wl-form">
-        <input class="wl-input" type="email" id="med-email" placeholder="seu@email.com.br">
-        <button class="btn primary wl-btn" onclick="submitWL('med')">Quero acesso antecipado</button>
-      </div>
-      <div class="wl-note">3 meses gratuitos para quem entrar agora.</div>
-      <div class="wl-success" id="med-ok"><div class="wl-success-t">Você está na lista.</div><div class="wl-success-d">Entraremos em contato com seu convite e 3 meses gratuitos.</div></div>
-    </div>
-  </div>
-  <footer>
-    <div class="footer-links"><a href="#" onclick="goTo('paciente');return false">Para pacientes</a><a href="#">Privacidade</a><a href="#">Contato</a></div>
-    <div class="footer-copy">© 2025 vitaid.</div>
-  </footer>
-</div>
+<!-- ════════════════════════════════════
+     PAGE: PACIENTE
+════════════════════════════════════ -->
+<div class="page" id="page-paciente">
 
-<!-- PACIENTE -->
-<div id="paciente" class="page">
-  <nav>
-    <a class="logo" onclick="goTo('home')"><span class="vita">vita</span><span class="idb">id</span></a>
-    <button class="nav-btn ghost" onclick="goTo('home')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 2L4 7l5 5"/></svg>Voltar</button>
-  </nav>
-  <div class="hero-wrap">
-    <div class="bg-glow-green"></div><div class="bg-grid"></div>
-    <div class="inner" style="text-align:center">
-      <div class="tag green"><span class="dot"></span>Para pacientes</div>
-      <h1>Sua saúde organizada.<br><em>Para sempre.</em></h1>
-      <p class="lead">Seus exames, medicamentos e alergias em um QR Code. Preenche uma vez. Usa para sempre.</p>
-      <div class="btn-row">
-        <button class="btn primary" onclick="document.getElementById('pac-wl').scrollIntoView({behavior:'smooth'})">Quero meu RG da Saúde</button>
-        <button class="btn outline" onclick="document.getElementById('pac-como').scrollIntoView({behavior:'smooth'})">Como funciona</button>
+  <!-- HERO -->
+  <section class="pac-hero" style="padding-top:0">
+    <div class="pac-hero-grid"></div>
+
+    <div class="hero-kicker reveal" style="color:var(--cyan);background:rgba(0,180,216,0.08);border-color:rgba(0,180,216,0.2)">
+      <span class="ac-dot" style="background:var(--cyan)"></span>
+      Para pacientes · RG da Saúde
+    </div>
+
+    <h1 class="pac-h1 reveal reveal-delay-1">
+      Preenche uma vez.<br><em>Leva para sempre.</em>
+    </h1>
+
+    <p class="med-sub reveal reveal-delay-2" style="color:rgba(255,255,255,0.5)">
+      Seu tipo sanguíneo, suas alergias, seus medicamentos, seus exames. Tudo num QR Code que você mostra para qualquer médico, em qualquer lugar.
+    </p>
+
+    <div class="hero-cta-row reveal reveal-delay-3">
+      <button class="btn-primary" style="background:linear-gradient(120deg,#00B4D8,#00E5A0)" onclick="document.getElementById('waitlist-pac').scrollIntoView({behavior:'smooth'})">Garantir meu RG da Saúde</button>
+      <button class="btn-ghost" onclick="document.getElementById('how-pac').scrollIntoView({behavior:'smooth'})">Como funciona</button>
+    </div>
+
+    <!-- QR CARD -->
+    <div class="qr-card reveal reveal-delay-4">
+      <div class="qr-header">
+        <div class="qr-vitaid-logo">
+          <span class="v">vita</span><span class="i">id</span>
+        </div>
+        <div class="qr-rg-badge">RG da Saúde</div>
       </div>
-      <div class="qr-card">
-        <div class="qr-brand"><span class="vita">vita</span><span class="idb">id</span></div>
-        <div class="qr-box"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="#0D0F14"><rect x="5" y="5" width="35" height="35" rx="4" fill="none" stroke="#0D0F14" stroke-width="4"/><rect x="12" y="12" width="21" height="21" rx="2"/><rect x="60" y="5" width="35" height="35" rx="4" fill="none" stroke="#0D0F14" stroke-width="4"/><rect x="67" y="12" width="21" height="21" rx="2"/><rect x="5" y="60" width="35" height="35" rx="4" fill="none" stroke="#0D0F14" stroke-width="4"/><rect x="12" y="67" width="21" height="21" rx="2"/><rect x="50" y="50" width="8" height="8"/><rect x="62" y="50" width="8" height="8"/><rect x="74" y="50" width="8" height="8"/><rect x="86" y="50" width="8" height="8"/><rect x="50" y="62" width="8" height="8"/><rect x="74" y="62" width="8" height="8"/><rect x="50" y="74" width="8" height="8"/><rect x="62" y="74" width="8" height="8"/><rect x="74" y="74" width="8" height="8"/><rect x="86" y="74" width="8" height="8"/><rect x="50" y="86" width="8" height="8"/><rect x="74" y="86" width="8" height="8"/></svg></div>
-        <div class="qr-name">Daniel Garrote</div>
-        <div class="qr-sub">RG da Saúde · A+ · 72 kg</div>
-        <div class="chips"><div class="chip g">Sem alergias</div><div class="chip b">Exames 2024</div><div class="chip g">Ativo</div></div>
+      <div class="qr-name">Daniel Garrote</div>
+      <div class="qr-meta-row">
+        <div class="qr-meta-item"><strong>A+</strong>Tipo sanguíneo</div>
+        <div class="qr-meta-item"><strong>32 anos</strong>Idade</div>
+        <div class="qr-meta-item"><strong>72kg</strong>Peso</div>
+      </div>
+      <div class="qr-square">
+        <!-- QR Code simulado -->
+        <div class="qr-grid" id="qr-grid"></div>
+      </div>
+      <div class="qr-alert-strip">
+        <div class="qr-alert-dot"></div>
+        <div class="qr-alert-text"><strong>Nenhuma alergia registrada</strong> · Ômega-3 · Creatina</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEMA -->
+  <section class="sec-problem">
+    <div class="section-inner">
+      <div class="sec-tag blue">O problema</div>
+      <h2 class="sec-h2" style="color:var(--text-dark)">Você carrega sua saúde<br><em style="background:linear-gradient(120deg,#0099B8,#00C47A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">em pedaços.</em></h2>
+      <p class="sec-sub" style="color:var(--text-mid)">O hemograma está na Sabin. O ultrassom no Fleury. A receita numa foto no celular. Numa emergência às 2 da manhã, você não consegue falar — e o médico não sabe nada sobre você.</p>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-num" style="background:linear-gradient(120deg,#0099B8,#00C47A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">73%</div>
+          <div class="stat-label">dos pacientes não sabem<br>seus medicamentos de cor</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" style="background:linear-gradient(120deg,#0099B8,#00C47A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">4,2x</div>
+          <div class="stat-label">mais chance de erro médico<br>sem histórico disponível</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" style="background:linear-gradient(120deg,#0099B8,#00C47A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">∞</div>
+          <div class="stat-label">vezes que você vai<br>usar o seu RG da Saúde</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARROSSEL PARCEIROS -->
+  <div class="carousel-section">
+    <div class="carousel-label">Parceiros & Compatibilidade</div>
+    <div class="carousel-track-wrap">
+      <div class="carousel-track">
+        <div class="carousel-item">
+          <div class="carousel-logo-box"><span class="sincra-logo">sincra</span></div>
+          <span class="carousel-name">Sincra</span>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-logo-box dark" style="background:linear-gradient(135deg,#0D1117,#1a1f2e)">
+            <span class="link-logo" style="font-size:9px;text-align:center;padding:4px">Link<br>School</span>
+          </div>
+          <span class="carousel-name">Link School of Business</span>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-logo-box" style="background:#000;padding:6px">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          </div>
+          <span class="carousel-name">Apple Wallet</span>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-logo-box" style="background:#fff;padding:8px">
+            <svg viewBox="0 0 24 24" width="28" height="28"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <span class="carousel-name">Google Wallet</span>
+        </div>
+        <!-- Duplicados -->
+        <div class="carousel-item">
+          <div class="carousel-logo-box"><span class="sincra-logo">sincra</span></div>
+          <span class="carousel-name">Sincra</span>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-logo-box dark" style="background:linear-gradient(135deg,#0D1117,#1a1f2e)">
+            <span class="link-logo" style="font-size:9px;text-align:center;padding:4px">Link<br>School</span>
+          </div>
+          <span class="carousel-name">Link School of Business</span>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-logo-box" style="background:#000;padding:6px">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          </div>
+          <span class="carousel-name">Apple Wallet</span>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-logo-box" style="background:#fff;padding:8px">
+            <svg viewBox="0 0 24 24" width="28" height="28"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <span class="carousel-name">Google Wallet</span>
+        </div>
       </div>
     </div>
   </div>
-  <div class="sec">
-    <div class="sec-inner">
-      <div class="tag green"><span class="dot"></span>Por que você precisa</div>
-      <h2>O QR Code que fala<br>por você quando <em>precisar.</em></h2>
-      <div class="scenario"><div class="scenario-tag" style="color:#F87171">Pronto-socorro · 2h da manhã</div><p class="scenario-text">Você não consegue falar. O médico nunca te viu. Ele aponta a câmera pro seu QR Code. Em cinco segundos sabe que você <strong>é alérgico a penicilina, toma Losartana, tem histórico de HAS na família.</strong> Pode salvar sua vida.</p></div>
-      <div class="scenario"><div class="scenario-tag" style="color:var(--cyan)">Viagem internacional</div><p class="scenario-text">Você passa mal. Médico local. Outro idioma. Ele lê seu QR Code. <strong>Os dados estão lá.</strong> Em qualquer país.</p></div>
-      <div class="scenario"><div class="scenario-tag" style="color:var(--green)">Check-up anual</div><p class="scenario-text">O médico vê seus exames dos últimos três anos. <strong>"Seu colesterol subiu 12 pontos."</strong> Em vez de começar do zero, vocês começam de onde pararam.</p></div>
-    </div>
-  </div>
-  <div class="div"></div>
-  <div class="sec" id="pac-como">
-    <div class="sec-inner">
-      <div class="tag green"><span class="dot"></span>Como funciona</div>
-      <h2>Preenche <em>uma vez.</em><br>Usa para sempre.</h2>
-      <div class="steps">
-        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-ttl">Você preenche uma vez</div><div class="step-dsc">Medicamentos, alergias, histórico familiar. Menos de 5 minutos.</div></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-ttl">Seus exames ficam salvos</div><div class="step-dsc">Quando seu médico usa o vitaid, os resultados ficam no seu perfil. Cresce a cada consulta.</div></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-ttl">O QR Code fala por você</div><div class="step-dsc">Em qualquer consulta, emergência ou viagem. Um gesto. Dois segundos.</div></div></div>
+
+  <!-- RG CARD SHOWCASE -->
+  <section class="rg-section">
+    <div style="max-width:1100px;margin:0 auto">
+      <div class="sec-tag" style="color:var(--cyan);background:rgba(0,180,216,0.08);border-color:rgba(0,180,216,0.2)">Seu documento digital</div>
+      <h2 class="sec-h2 dark-txt">O RG da Saúde.<br><em>Sempre no seu bolso.</em></h2>
+
+      <div class="rg-showcase">
+        <!-- Card 3D -->
+        <div class="rg-card-wrap" id="rg-card-el">
+          <div class="rg-card-3d">
+            <div class="rg-card-shine"></div>
+            <div class="rg-card-header">
+              <div class="rg-card-logo">
+                <div class="rg-card-logo-row">
+                  <span class="v">vita</span><span class="i">id</span>
+                </div>
+                <div class="rg-card-subtitle">Identidade em saúde</div>
+              </div>
+              <div class="rg-flip-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+                virar
+              </div>
+            </div>
+            <div class="rg-avatar-row">
+              <div class="rg-avatar">LB</div>
+              <div>
+                <div class="rg-name">daniel garrote schocair</div>
+                <div class="rg-cpf">23362492860</div>
+              </div>
+            </div>
+            <div class="rg-meta-strip">
+              <div class="rg-meta-col">
+                <div class="label">Nascimento</div>
+                <div class="val">28.06.2008</div>
+              </div>
+              <div class="rg-meta-col">
+                <div class="label">Sangue</div>
+                <div class="val green">A_POS</div>
+              </div>
+              <div class="rg-meta-col">
+                <div class="label">Plano</div>
+                <div class="val">SUS</div>
+              </div>
+            </div>
+            <div class="rg-bottom-row">
+              <div class="rg-chip">D</div>
+              <svg class="rg-nfc" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
+                <path d="M12 1C6.477 1 2 5.477 2 11s4.477 10 10 10 10-4.477 10-10S17.523 1 12 1z"/>
+                <path d="M8 11a4 4 0 018 0"/>
+                <path d="M5 11a7 7 0 0114 0"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Texto lado direito -->
+        <div class="rg-text-side reveal">
+          <p style="font-size:18px;color:rgba(255,255,255,0.55);line-height:1.65;margin-bottom:32px">Um documento único que representa quem você é clinicamente — e que fala por você em qualquer situação.</p>
+          <div class="rg-benefit-list">
+            <div class="rg-benefit">
+              <div class="rg-benefit-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div>
+                <div class="rg-benefit-title">Seus dados, só seus</div>
+                <div class="rg-benefit-desc">Você controla quem acessa e por quanto tempo. O QR Code pode ser revogado a qualquer hora.</div>
+              </div>
+            </div>
+            <div class="rg-benefit">
+              <div class="rg-benefit-icon">
+                <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+              </div>
+              <div>
+                <div class="rg-benefit-title">Apple e Google Wallet</div>
+                <div class="rg-benefit-desc">Sempre no seu celular, offline. Funciona numa emergência sem internet, em qualquer país.</div>
+              </div>
+            </div>
+            <div class="rg-benefit">
+              <div class="rg-benefit-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+              </div>
+              <div>
+                <div class="rg-benefit-title">Preenche uma vez</div>
+                <div class="rg-benefit-desc">3 minutos agora. Para sempre. Cada consulta atualiza seu perfil automaticamente.</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card"><div class="card-icon" style="background:rgba(0,229,160,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00E5A0" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="card-title">Seus dados são seus</div><div class="card-desc">Você decide quem acessa, quando e por quanto tempo. LGPD no centro do produto.</div></div>
-      <div class="card"><div class="card-icon" style="background:rgba(0,180,216,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00B4D8" stroke-width="1.8" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><div class="card-title">Seus exames em linguagem humana</div><div class="card-desc">Cada resultado explicado de forma educativa. Entenda o que significa e o que perguntar ao médico.</div></div>
-      <div class="card"><div class="card-icon" style="background:rgba(0,229,160,0.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00E5A0" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 17h4M17 14v4"/></svg></div><div class="card-title">QR Code universal</div><div class="card-desc">Funciona em qualquer clínica, hospital ou laboratório. Sem app específico no celular do médico.</div></div>
     </div>
-  </div>
-  <div class="div"></div>
-  <div class="sec">
-    <div class="sec-inner">
-      <div class="tag green"><span class="dot"></span>Preço</div>
-      <h2>Uma vez só.<br><em>Para sempre.</em></h2><br>
-      <div class="price-card">
-        <div class="price-badge">Pagamento único</div>
-        <div class="price-name">RG da Saúde</div>
-        <div class="price-val"><sup>R$</sup>4<sub>,99</sub></div>
-        <div class="price-desc">Uma vez. Sem mensalidade. Seu perfil fica ativo para sempre.</div>
-        <ul class="price-list"><li>RG da Saúde completo</li><li>QR Code pessoal e permanente</li><li>Histórico de exames centralizado</li><li>Interpretação educativa dos seus exames</li><li>Compartilhamento com médicos</li><li>Proteção LGPD total</li></ul>
-        <button class="btn primary" onclick="document.getElementById('pac-wl').scrollIntoView({behavior:'smooth'})">Quero meu RG da Saúde</button>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section class="sec-virada" id="how-pac">
+    <div class="section-inner">
+      <div class="sec-tag" style="color:var(--cyan);background:rgba(0,180,216,0.08);border-color:rgba(0,180,216,0.2)">Como funciona</div>
+      <h2 class="sec-h2 dark-txt">Três minutos agora.<br><em>Proteção para sempre.</em></h2>
+      <p class="sec-sub light-txt">Você preenche uma vez. O vitaid guarda, organiza e entrega quando você precisar.</p>
+
+      <div class="how-steps">
+        <div class="step-card reveal" style="--step-color:var(--cyan)">
+          <div class="step-num">Passo 01</div>
+          <div class="step-icon" style="background:rgba(0,180,216,0.1)">
+            <svg viewBox="0 0 24 24" stroke="var(--cyan)"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <div class="step-title">Preenche seus dados</div>
+          <div class="step-desc">Em 3 minutos no celular. Tipo sanguíneo, alergias, medicamentos, histórico. Uma vez só. Sem complicação.</div>
+        </div>
+        <div class="step-card reveal reveal-delay-1">
+          <div class="step-num">Passo 02</div>
+          <div class="step-icon" style="background:rgba(0,180,216,0.1)">
+            <svg viewBox="0 0 24 24" stroke="var(--cyan)"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx=".5"/><rect x="18" y="14" width="3" height="3" rx=".5"/><rect x="14" y="18" width="3" height="3" rx=".5"/><rect x="18" y="18" width="3" height="3" rx=".5"/></svg>
+          </div>
+          <div class="step-title">Recebe seu QR Code</div>
+          <div class="step-desc">Fica no seu celular, na Apple Wallet ou Google Wallet. Sempre com você. Mesmo sem internet.</div>
+        </div>
+        <div class="step-card reveal reveal-delay-2">
+          <div class="step-num">Passo 03</div>
+          <div class="step-icon" style="background:rgba(0,180,216,0.1)">
+            <svg viewBox="0 0 24 24" stroke="var(--cyan)"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+          </div>
+          <div class="step-title">Mostra em qualquer consulta</div>
+          <div class="step-desc">O médico aponta a câmera. Em dois segundos vê tudo. Você não precisa lembrar de nada — seu RG da Saúde lembra por você.</div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="waitlist-wrap" id="pac-wl">
-    <div class="wl-bg"></div>
-    <div class="inner">
-      <h2>Sua saúde merece<br>um <em>lugar fixo.</em></h2>
-      <p class="lead">Primeiros 500 pacientes têm acesso gratuito por 6 meses.</p>
-      <div class="wl-form">
-        <input class="wl-input" type="email" id="pac-email" placeholder="seu@email.com.br">
-        <button class="btn primary wl-btn" onclick="submitWL('pac')">Garantir meu RG da Saúde</button>
+  </section>
+
+  <!-- FEATURES -->
+  <section style="background:var(--dark);padding:80px 48px">
+    <div class="section-inner">
+      <div class="sec-tag" style="color:var(--cyan);background:rgba(0,180,216,0.08);border-color:rgba(0,180,216,0.2)">O que você tem</div>
+      <h2 class="sec-h2 dark-txt" style="margin-bottom:0">Tudo que importa,<br><em>no lugar certo.</em></h2>
+
+      <div class="feature-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+          </div>
+          <div class="feature-title">Emergência às 2 da manhã</div>
+          <div class="feature-desc">Você não consegue falar. O médico lê seu QR Code e em 5 segundos sabe suas alergias, medicamentos e tipo sanguíneo. Isso pode salvar sua vida.</div>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          </div>
+          <div class="feature-title">Viagem para o exterior</div>
+          <div class="feature-desc">Médico não fala português. Você não fala o idioma. O QR Code fala por você. Em qualquer língua.</div>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+          </div>
+          <div class="feature-title">Check-up anual com contexto</div>
+          <div class="feature-desc">O médico vê a linha do tempo dos seus exames. "Seu colesterol subiu 12 pontos desde o último exame." Em vez de começar do zero, vocês continuam de onde pararam.</div>
+        </div>
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div class="feature-title">Cuidando de quem você ama</div>
+          <div class="feature-desc">Pais idosos, filhos, parceiro. Você gerencia os RGs da Saúde de toda a família num só lugar. Paz de quem cuida de quem ama.</div>
+        </div>
       </div>
-      <div class="wl-note">Acesso gratuito por 6 meses para os primeiros.</div>
-      <div class="wl-success" id="pac-ok"><div class="wl-success-t">Você está na lista.</div><div class="wl-success-d">Entraremos em contato com seu acesso gratuito.</div></div>
+    </div>
+  </section>
+
+  <!-- DEPOIMENTO -->
+  <section class="sec-testimonial">
+    <div class="section-inner">
+      <div class="sec-tag dark" style="text-align:center">O que pacientes dizem</div>
+      <div class="testimonial-box reveal" style="border-color:rgba(0,180,216,0.15)">
+        <div class="quote-mark" style="color:rgba(0,180,216,0.15)">"</div>
+        <p class="quote-text">Fui a uma consulta nova e o médico disse: "Já vi aqui que você tem histórico familiar de hipertensão e seus exames de dezembro." Nunca na vida um médico tinha chegado assim. Me senti cuidada de verdade.</p>
+        <div class="quote-author">
+          <div class="quote-avatar" style="background:linear-gradient(120deg,#00B4D8,#00E5A0)">MA</div>
+          <div>
+            <div class="quote-name">Maria Aparecida</div>
+            <div class="quote-role">Paciente · Rio de Janeiro</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="sec-faq">
+    <div class="section-inner">
+      <div class="sec-tag" style="color:var(--cyan);background:rgba(0,180,216,0.08);border-color:rgba(0,180,216,0.2)">Dúvidas</div>
+      <h2 class="sec-h2 dark-txt">Perguntas<br><em>que todo paciente faz.</em></h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Meus dados ficam seguros?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-a">Sim. Seus dados são criptografados e você controla quem acessa. O QR Code pode ter validade e ser revogado a qualquer hora. Seus dados são seus — literalmente.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Qualquer médico consegue ler o QR Code?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-a">Sim. Qualquer câmera de celular consegue ler. O médico não precisa ter o vitaid instalado. Funciona em qualquer clínica, hospital ou laboratório.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            E se eu não tiver internet na emergência?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-a">O QR Code fica salvo na Apple Wallet ou Google Wallet — funciona completamente offline. Seus dados de emergência sempre disponíveis, mesmo sem sinal.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Quanto custa?
+            <svg class="faq-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-a">R$4,99 uma vez só. Sem assinatura mensal, sem renovação. Você paga uma vez e o vitaid é seu para sempre.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <div class="sec-cta-final">
+    <div class="cta-box reveal" style="border-color:rgba(0,180,216,0.15)">
+      <h2 class="cta-h2">Seu RG da Saúde.<br>Uma vez. Para sempre.</h2>
+      <p class="cta-sub">Entre na lista de espera. Acesso antecipado com preço especial.</p>
+      <div class="waitlist-form" id="waitlist-pac">
+        <input class="waitlist-input" type="email" placeholder="seu@email.com">
+        <button class="waitlist-btn" style="background:linear-gradient(120deg,#00B4D8,#00E5A0)" onclick="joinWaitlist(this)">Garantir meu RG</button>
+      </div>
+      <p class="waitlist-note">R$4,99 · Pagamento único · Sem mensalidade</p>
     </div>
   </div>
+
   <footer>
-    <div class="footer-links"><a href="#" onclick="goTo('medico');return false">Para médicos</a><a href="#">Privacidade</a><a href="#">Contato</a></div>
-    <div class="footer-copy">© 2025 vitaid.</div>
+    <div class="footer-logo"><span class="vita">vita</span><span class="id-box">id</span></div>
+    <div class="footer-note">© 2025 vitaid · Para pacientes</div>
+    <div class="footer-note">LGPD · Seus dados são seus</div>
   </footer>
 </div>
 
 <script>
-function goTo(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');window.scrollTo({top:0,behavior:'instant'})}
-function submitWL(type){
-  const input=document.getElementById(type+'-email');
-  const email=input.value.trim();
-  if(!email||!email.includes('@')){input.style.borderColor='rgba(239,68,68,0.5)';setTimeout(()=>input.style.borderColor='',2000);return}
-  input.closest('.wl-form').style.opacity='.4';
-  input.closest('.wl-form').style.pointerEvents='none';
-  document.getElementById(type+'-ok').classList.add('show');
+// ── NAVEGAÇÃO ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0,0);
+  
+  const navRight = document.getElementById('nav-right');
+  if(id === 'home') {
+    navRight.innerHTML = '<a class="nav-cta" onclick="scrollToWaitlist()">Entrar na lista</a>';
+  } else {
+    navRight.innerHTML = `
+      <button class="nav-back" onclick="showPage('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Voltar
+      </button>`;
+  }
+  
+  setTimeout(() => { initReveal(); initMockupObservers(); }, 100);
 }
-document.querySelectorAll('.wl-input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')submitWL(i.id.replace('-email',''))}));
+
+function scrollToWaitlist() {
+  document.getElementById('waitlist-home').scrollIntoView({behavior:'smooth'});
+}
+
+// ── SCROLL NAV ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── REVEAL ON SCROLL ──
+function initReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') });
+  }, {threshold: 0.1});
+  document.querySelectorAll('.page.active .reveal').forEach(el => observer.observe(el));
+}
+initReveal();
+
+// ── FAQ ──
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+}
+
+// ── WAITLIST ──
+function joinWaitlist(btn) {
+  const form = btn.parentElement;
+  const input = form.querySelector('input');
+  if(!input.value || !input.value.includes('@')) {
+    input.style.borderColor = 'rgba(239,68,68,0.5)';
+    setTimeout(() => input.style.borderColor = '', 1500);
+    return;
+  }
+  btn.textContent = '✓ Na lista!';
+  btn.style.background = 'rgba(0,229,160,0.2)';
+  btn.style.color = 'var(--green)';
+  btn.style.border = '1px solid rgba(0,229,160,0.3)';
+  btn.disabled = true;
+  input.value = '';
+  input.placeholder = 'Você está na lista! 🎉';
+}
+
+// ── QR CODE SIMULADO ──
+function buildQR() {
+  const grid = document.getElementById('qr-grid');
+  if(!grid) return;
+  // Padrão QR simulado — cantos e módulos
+  const pattern = [
+    1,1,1,1,1,1,1,0,
+    1,0,0,0,0,0,1,0,
+    1,0,1,1,1,0,1,0,
+    1,0,1,1,1,0,1,1,
+    1,0,1,1,1,0,1,0,
+    1,0,0,0,0,0,1,1,
+    1,1,1,1,1,1,1,0,
+  ];
+  for(let i=0;i<49;i++){
+    const cell = document.createElement('div');
+    cell.className = 'qr-cell';
+    const isCorner = pattern[i];
+    const isRandom = Math.random() > 0.55;
+    cell.style.background = (isCorner || isRandom) ? 'rgba(255,255,255,0.85)' : 'transparent';
+    grid.appendChild(cell);
+  }
+}
+
+// ── CALCULADORA HERO ──
+function phcUpdate() {
+  const consultas = parseInt(document.getElementById('phc-consultas').value);
+  const duracao   = parseInt(document.getElementById('phc-duracao').value);
+  const valor     = parseInt(document.getElementById('phc-valor').value);
+  const dias      = parseInt(document.getElementById('phc-dias').value);
+
+  document.getElementById('phc-val-consultas').textContent = consultas;
+  document.getElementById('phc-val-duracao').textContent   = duracao + ' min';
+  document.getElementById('phc-val-valor').textContent     = 'R$ ' + valor.toLocaleString('pt-BR');
+  document.getElementById('phc-val-dias').textContent      = dias + ' dias';
+
+  // Atualiza gradiente dos sliders
+  ['phc-consultas','phc-duracao','phc-valor','phc-dias'].forEach(id => {
+    const sl = document.getElementById(id);
+    if(!sl) return;
+    const min = parseFloat(sl.min), max = parseFloat(sl.max), val = parseFloat(sl.value);
+    const pct = ((val - min)/(max - min))*100;
+    sl.style.background = `linear-gradient(90deg,#00E5A0 ${pct}%,#E5E7EB ${pct}%)`;
+  });
+
+  const minSaved       = 15;
+  const newDuracao     = Math.max(duracao - minSaved, 20);
+  const horasTotal     = consultas * duracao;
+  const novasConsultas = Math.floor(horasTotal / newDuracao);
+  const extra          = novasConsultas - consultas;
+  const ganho          = extra * valor * dias;
+
+  const fmt = n => 'R$ ' + n.toLocaleString('pt-BR');
+  document.getElementById('phc-ganho').textContent = '+ ' + fmt(ganho);
+  document.getElementById('phc-sub').textContent   =
+    `+${extra} consulta${extra!==1?'s':''}/dia · ${dias} dias · ${fmt(valor)} cada`;
+}
+
+// Inicializar sliders com gradiente correto
+function initSliders() {
+  ['phc-consultas','phc-duracao','phc-valor','phc-dias'].forEach(id => {
+    const sl = document.getElementById(id);
+    if(!sl) return;
+    const min = parseFloat(sl.min), max = parseFloat(sl.max), val = parseFloat(sl.value);
+    const pct = ((val - min)/(max - min))*100;
+    sl.style.background = `linear-gradient(90deg,#00E5A0 ${pct}%,#E5E7EB ${pct}%)`;
+  });
+}
+
+// ── CALCULADORA ──
+function calcUpdate() {
+  const consultas = parseInt(document.getElementById('sl-consultas').value);
+  const duracao   = parseInt(document.getElementById('sl-duracao').value);
+  const valor     = parseInt(document.getElementById('sl-valor').value);
+  const dias      = parseInt(document.getElementById('sl-dias').value);
+
+  document.getElementById('val-consultas').textContent = consultas;
+  document.getElementById('val-duracao').textContent   = duracao + ' min';
+  document.getElementById('val-valor').textContent     = 'R$ ' + valor.toLocaleString('pt-BR');
+  document.getElementById('val-dias').textContent      = dias + ' dias';
+
+  // Atualizar gradiente dos sliders
+  ['sl-consultas','sl-duracao','sl-valor','sl-dias'].forEach(id => {
+    const sl = document.getElementById(id);
+    const min = parseFloat(sl.min), max = parseFloat(sl.max), val = parseFloat(sl.value);
+    const pct = ((val - min) / (max - min)) * 100;
+    sl.style.setProperty('--pct', pct + '%');
+    sl.style.background = `linear-gradient(90deg, #00E5A0 ${pct}%, #E5E7EB ${pct}%)`;
+  });
+
+  // Lógica: horas disponíveis no dia = consultas * duracao
+  // Com vitaid, cada consulta fica 15min mais curta
+  const minSaved      = 15;
+  const newDuracao    = duracao - minSaved;
+  const horasTotal    = consultas * duracao;          // minutos totais disponíveis
+  const novasConsultas = Math.floor(horasTotal / newDuracao); // consultas com vitaid
+  const extraConsultas = novasConsultas - consultas;
+
+  const receitaAtual  = consultas * valor * dias;
+  const receitaVitaid = novasConsultas * valor * dias;
+  const ganho         = receitaVitaid - receitaAtual;
+
+  const fmt = n => 'R$ ' + n.toLocaleString('pt-BR');
+
+  document.getElementById('res-atual').textContent  = fmt(receitaAtual);
+  document.getElementById('res-vitaid').textContent = fmt(receitaVitaid);
+  document.getElementById('res-ganho').textContent  = '+ ' + fmt(ganho) + ' / mês';
+  document.getElementById('res-extra').textContent  =
+    `+${extraConsultas} consulta${extraConsultas !== 1 ? 's' : ''}/dia · ${dias} dias · ${fmt(valor)} cada`;
+}
+
+// ── MACBOOK + RG CARD SCROLL ANIMATION ──
+function initMockupObservers() {
+  const macbook = document.getElementById('macbook-med');
+  const rgCard = document.getElementById('rg-card-el');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, {threshold: 0.15});
+
+  if(macbook) obs.observe(macbook);
+  if(rgCard) obs.observe(rgCard);
+}
+
+// ── INIT ──
+buildQR();
+initSliders();
 </script>
 </body>
 </html>
